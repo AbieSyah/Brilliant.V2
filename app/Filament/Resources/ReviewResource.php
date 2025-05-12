@@ -19,7 +19,7 @@ class ReviewResource extends Resource
     protected static ?string $model = Review::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-star';
-    protected static ?string $navigationGroup = 'Content Management';
+    protected static ?string $navigationGroup = 'Manajemen Konten';
     protected static ?string $modelLabel = 'Ulasan';
     protected static ?string $pluralModelLabel = 'Daftar Ulasan';
     protected static ?int $navigationSort = 1;
@@ -32,7 +32,6 @@ class ReviewResource extends Resource
                     ->label('Avatar Type')
                     ->options([
                         'local' => 'Upload Local Image',
-                        'dropbox' => 'Dropbox URL',
                     ])
                     ->default('local')
                     ->reactive(),

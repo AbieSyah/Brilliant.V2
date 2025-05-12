@@ -13,8 +13,6 @@ class ActivityLog extends Model
         'model_id',
         'old_values',
         'new_values',
-        'ip_address',
-        'user_agent'
     ];
 
     protected $casts = [
@@ -25,5 +23,25 @@ class ActivityLog extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getModelNameAttribute()
+    {
+        return match ($this->model_type) {
+            'App\Models\GalleryPhoto' => 'Foto Galeri',
+            'App\Models\GalleryVideo' => 'Video Galeri',
+            'App\Models\Facility' => 'Fasilitas',
+            default => class_basename($this->model_type),
+        };
+    }
+
+    public function getActionLabelAttribute()
+    {
+        return match ($this->action) {
+            'created' => 'Menambahkan',
+            'updated' => 'Mengubah',
+            'deleted' => 'Menghapus',
+            default => $this->action,
+        };
     }
 }
