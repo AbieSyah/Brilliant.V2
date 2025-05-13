@@ -74,7 +74,7 @@
                             <a class="nav-link" href="#fasilitas">Fasilitas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#booking">Booking</a>
+                            <a class="nav-link" href="#chat">Q&A</a>
                         </li>
                         <!-- <a class="pesan-logo" href="#">
                             <img src="{{ asset('/landing-page/assets/img/pesan.png') }}" alt="Logo" width="50"
@@ -85,70 +85,138 @@
             </div>
         </div>
     </nav>
-    <section class="galeri-section py-5 position-relative" style="background-color: white; z-index: 2;" id="galeri">
-        <div class="container">
-            <div class="row align-items-center">
-                <!-- Teks -->
-                <div class="col-lg-6 text-center text-lg-start mb-3 mb-lg-0 d-flex flex-column justify-content-center"
-                    style="margin-top: -50px;">
-                    <p class="text-uppercase fw-bold mb-2" style="color: #AE9518; font-size: 1.1rem; margin-top: 30px;">
-                        KENANGAN BERSAMA B-CAMP MU!
-                    </p>
-                    <h2 class="fw-bold mb-3" style="font-size: 3.3rem; line-height: 1.2;">
-                        <span style="color: #AE9518;">Galeri</span> <span style="color: #000;">B-Camp</span>
-                    </h2>
-                    <div class="d-flex justify-content-center justify-content-lg-start">
-                        <button class="btn-gold" onclick="window.location.href='{{ route('galeri') }}'">Lihat Lebih
-                            Banyak -></button>
+
+    <style>
+        .gallery-heading {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #3f5c4c;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-desc {
+            font-size: 1.05rem;
+            color: #4e4e4e;
+            line-height: 1.6;
+        }
+
+        .gallery-img,
+        .gallery-video iframe {
+            border-radius: 20px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-img:hover,
+        .gallery-video iframe:hover {
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 768px) {
+            .gallery-heading {
+                font-size: 1.3rem;
+                text-align: center;
+            }
+
+            .gallery-desc {
+                text-align: center;
+            }
+        }
+    </style>
+
+    <section id="galeri-bcamp" class="py-5" style="background-color: #f3f8f4;">
+        <div class="container" style="max-width: 1100px;">
+            <h2 class="text-center fw-bold mb-5" style="color: #519259; font-size: 2.8rem;">Galeri <span
+                    style="color:#000;">B-Camp</span></h2>
+            <div class="container" style="max-width: 1100px;">
+                <!-- Item 1 - Gambar Kiri -->
+                <div class="row align-items-center mb-5">
+                    <div class="col-md-6">
+                        <img src="{{ asset('/landing-page/assets/img/g1.jpg') }}"
+                            class="img-fluid rounded-4 shadow gallery-img" alt="Foto 1">
                     </div>
-
+                    <div class="col-md-6 ps-md-4 pt-4 pt-md-0">
+                        <h3 class="gallery-heading">📸 Keseruan Hari Pertama!</h3>
+                        <p class="gallery-desc">Lihat bagaimana para peserta saling berkenalan dan langsung akrab dalam
+                            suasana yang hangat dan fun!</p>
+                    </div>
                 </div>
-                <!-- Gambar -->
-                <div class="col-lg-6 d-flex justify-content-center">
-                    <div class="d-flex gap-3">
-                        <!-- Gambar besar -->
-                        <div class="rounded-4 overflow-hidden"
-                            style="width: 330px; height: 525px; margin-left: -30px; margin-top: 50px;">
-                            <iframe src="https://www.youtube.com/embed/H0TOfgpNJO4?rel=0&autoplay=0&modestbranding=1"
-                                title="YouTube Shorts Video" width="100%" height="100%" style="border:0;"
-                                allowfullscreen
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
-                            </iframe>
+
+                <!-- Item 2 - Video Kanan -->
+                <div class="row align-items-center flex-md-row-reverse mb-5">
+                    <div class="col-md-6">
+                        <div class="ratio ratio-16x9 rounded-4 shadow gallery-video">
+                            <iframe src="https://www.youtube.com/embed/zBR5A-fGPqk" title="Video Kegiatan"
+                                allowfullscreen></iframe>
                         </div>
-                        <!-- Dua gambar kecil -->
-                        <div class="d-flex flex-column gap-3">
-                            <img src="{{ asset('/landing-page/assets/img/G1.png') }}" class="img-fluid rounded-4"
-                                style="width: 180px; margin-top: 50px; margin-left: 20px;">
-                            <img src="{{ asset('/landing-page/assets/img/G2.png') }}" class="img-fluid rounded-4"
-                                style="width: 180px; margin-top: 15px; margin-left: 20px;">
+                    </div>
+                    <div class="col-md-6 pe-md-4 pt-4 pt-md-0">
+                        <h3 class="gallery-heading">🎬 Dokumentasi Seru Banget!</h3>
+                        <p class="gallery-desc">Tonton cuplikan kegiatan outdoor yang bikin ngakak tapi juga penuh
+                            pembelajaran kerjasama!</p>
+                    </div>
+                </div>
+
+                <!-- Item 3 - Gambar Kiri -->
+                <div class="row align-items-center mb-5">
+                    <div class="col-md-6">
+                        <img src="{{ asset('/landing-page/assets/img/g2.jpg') }}"
+                            class="img-fluid rounded-4 shadow gallery-img" alt="Foto 2">
+                    </div>
+                    <div class="col-md-6 ps-md-4 pt-4 pt-md-0">
+                        <h3 class="gallery-heading">👭 Kebersamaan di Asrama</h3>
+                        <p class="gallery-desc">Waktu malam hari di asrama jadi tempat paling seru buat saling cerita
+                            dan
+                            berbagi pengalaman.</p>
+                    </div>
+                </div>
+
+                <!-- Item 4 - Gambar Kanan -->
+                <div class="row align-items-center flex-md-row-reverse mb-5">
+                    <div class="col-md-6">
+                        <img src="{{ asset('/landing-page/assets/img/g3.jpg') }}"
+                            class="img-fluid rounded-4 shadow gallery-img" alt="Foto 3">
+                    </div>
+                    <div class="col-md-6 pe-md-4 pt-4 pt-md-0">
+                        <h3 class="gallery-heading">📖 Belajar Sambil Ketawa</h3>
+                        <p class="gallery-desc">Belajar di B-Camp nggak bikin bosan. Suasananya cair dan instruktur
+                            ramah
+                            banget!</p>
+                    </div>
+                </div>
+
+                <!-- Item 5 - Video Kiri -->
+                <div class="row align-items-center mb-5">
+                    <div class="col-md-6">
+                        <div class="ratio ratio-16x9 rounded-4 shadow gallery-video">
+                            <iframe src="https://www.youtube.com/embed/IZaShdlFUVI" title="Video Kegiatan 2"
+                                allowfullscreen></iframe>
                         </div>
+                    </div>
+                    <div class="col-md-6 ps-md-4 pt-4 pt-md-0">
+                        <h3 class="gallery-heading">🏃‍♂️ Games Team Building</h3>
+                        <p class="gallery-desc">Challenge teamwork di lapangan! Semuanya semangat, saling support, dan
+                            ketawa bareng!</p>
+                    </div>
+                </div>
+
+                <!-- Item 6 - Gambar Kanan -->
+                <div class="row align-items-center flex-md-row-reverse mb-5">
+                    <div class="col-md-6">
+                        <img src="{{ asset('/landing-page/assets/img/g4.jpg') }}"
+                            class="img-fluid rounded-4 shadow gallery-img" alt="Foto 4">
+                    </div>
+                    <div class="col-md-6 pe-md-4 pt-4 pt-md-0">
+                        <h3 class="gallery-heading">📖 Belajar Sambil Ketawa</h3>
+                        <p class="gallery-desc">Belajar di B-Camp nggak bikin bosan. Suasananya cair dan instruktur
+                            ramah
+                            banget!</p>
                     </div>
                 </div>
             </div>
-        </div>
-        <section class="booking-section" id="booking">
-            <div class="text-center w-100 position-relative">
-                <img src="{{ asset('/landing-page/assets/img/logos/hp.png') }}" class="img-fluid custom-hp-img"
-                    alt="Atas">
-            </div>
-            <div class="booking-text">
-                <h2 class="text-booking">
-                    Booking Camp pilihanmu <br> sekarang juga!
-                </h2>
-                <p class="text-booking-desc">
-                    Nikmati pengalaman belajar Bahasa Inggris yang menyenangkan dan nyaman di B-Camp. Dengan fasilitas
-                    lengkap dan suasana yang mendukung, kamu bisa belajar sambil bersantai. Booking sekarang dan rasakan
-                    perbedaannya!
-                </p>
-                <div class="booking-button-wrapper">
-                    <a href="/download" class="btn-download">Download Sekarang</a>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Fasilitas Section -->
     </section>
+
     <section class="fasilitas-section" id="fasilitas">
         <div class="container text-center">
             <div style="text-align: center;">
@@ -397,13 +465,49 @@
         </div>
     </section>
     <section>
-        <div class="add-feedback text-center my-5" style="margin-bottom: auto">
+        <div class="add-feedback text-center my-5" id="chat" style="margin-bottom: auto">
             <img src="{{ asset('/landing-page/assets/img/logos/pesan.png') }}" alt="Tambah Pesan Icon"
                 class="feedback-icon">
-            <span class="feedback-text">Tambah kesan & pesan-mu tentang B-Camp</span>
-            <a href="#formKesanPesan" class="feedback-btn">+ Tambahkan pesan</a>
+            <span class="feedback-text">Butuh bantuan? Chat disini...</span>
+            <a href="#formKesanPesan" class="feedback-btn">Chat</a>
         </div>
     </section>
+    <a href="https://wa.me/6281234567890?text=Halo%20saya%20butuh%20bantuan%20tentang%20B-Camp"
+        class="wa-float d-flex align-items-center" target="_blank">
+        <div class="wa-text">Butuh bantuan? Chat disini..</div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon" class="wa-icon">
+    </a>
+    <style>
+        .wa-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ffffff;
+            color: #000;
+            border-radius: 30px;
+            padding: 8px 14px;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 9999;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .wa-float:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+        }
+
+        .wa-text {
+            margin-right: 10px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .wa-icon {
+            width: 30px;
+            height: 30px;
+        }
+    </style>
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
