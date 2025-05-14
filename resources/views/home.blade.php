@@ -74,7 +74,7 @@
                             <a class="nav-link" href="#fasilitas">Fasilitas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#chat">Q&A</a>
+                            <a class="nav-link" href="#chat">Ulasan</a>
                         </li>
                         <!-- <a class="pesan-logo" href="#">
                             <img src="{{ asset('/landing-page/assets/img/pesan.png') }}" alt="Logo" width="50"
