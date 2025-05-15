@@ -27,7 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->brandName(fn (): string => auth()->check() ? 'Selamat datang, ' . auth()->user()->name : '')
+            ->brandName(fn(): string => auth()->check() ? 'Selamat datang, ' . auth()->user()->name : '')
             ->login()
             ->colors([
                 'primary' => Color::Amber,

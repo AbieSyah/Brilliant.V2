@@ -27,11 +27,20 @@ class GalleryPhotoResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('title')
+                    ->label('Judul')
+                    ->required()
+                    ->maxLength(255),
+
+                Forms\Components\Textarea::make('description')
+                    ->label('Deskripsi')
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+
                 Forms\Components\FileUpload::make('image')
                     ->required()
                     ->image()
                     ->maxSize(2048)
-                    ->openable()
                     ->directory('gallery/photos')
                     ->label('Foto'),
             ]);
@@ -41,6 +50,9 @@ class GalleryPhotoResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Judul')
+                    ->searchable(),
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Foto')
                     ->square()

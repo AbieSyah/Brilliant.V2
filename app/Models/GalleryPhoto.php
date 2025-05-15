@@ -10,7 +10,11 @@ class GalleryPhoto extends Model
 {
     use LogsActivity;
 
-    protected $fillable = ['image'];
+    protected $fillable = [
+        'title',
+        'description',
+        'image'
+    ];
     protected static $logAttributes = ['image'];
 
     protected static function boot()

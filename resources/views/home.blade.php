@@ -14,9 +14,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
         crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @livewireStyles
 </head>
 
 <body>
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <section class="hero-section" id="Beranda">
         <div class="container">
             <div class="hero-content">
@@ -76,10 +87,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#chat">Ulasan</a>
                         </li>
-                        <!-- <a class="pesan-logo" href="#">
-                            <img src="{{ asset('/landing-page/assets/img/pesan.png') }}" alt="Logo" width="50"
-                                height="50">
-                        </a> -->
                     </ul>
                 </div>
             </div>
@@ -122,6 +129,62 @@
             .gallery-desc {
                 text-align: center;
             }
+        }
+
+        .rating {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            cursor: pointer;
+            font-size: 30px;
+            color: #ddd;
+            padding: 5px;
+        }
+
+        .rating input:checked~label {
+            color: #ffd700;
+        }
+
+        .rating label:hover,
+        .rating label:hover~label {
+            color: #ffd700;
+        }
+
+        .rating span {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            margin-top: 0.25rem;
+        }
+
+        .text-danger {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+
+        .alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            min-width: 300px;
         }
     </style>
 
@@ -219,86 +282,83 @@
 
     <section class="fasilitas-section" id="fasilitas">
         <div class="container text-center">
-            <div style="text-align: center;">
-                <h2
-                    style="font-family: 'Montserrat', sans-serif; font-weight: 800; color: #4E6C50; font-size: 2.5rem; margin-bottom: 10px;">
+            <!-- Section Header -->
+            <div class="text-center">
+                <h2 style="font-family: 'Montserrat', sans-serif; font-weight: 800; color: #4E6C50; font-size: 2.5rem; margin-bottom: 10px;">
                     Fasilitas
                 </h2>
-                <p
-                    style="font-family: 'Montserrat', sans-serif; font-weight: 500; color: #000000; font-size: 1.1rem; margin: 0;">
+                <p style="font-family: 'Montserrat', sans-serif; font-weight: 500; color: #000000; font-size: 1.1rem; margin: 0;">
                     Jelajahi Asrama dan Fasilitas lainnya di B-Camp!
                 </p>
             </div>
 
-            <div class="cards">
-                <div class="card">
-                    <img src="{{ asset('/landing-page/assets/img/logos/C2.png') }}" alt="Logo VIP" class="card-logo">
-                    <h3>Reguler</h3>
-                    <div class="image-container">
-                        <img src="{{ asset('/landing-page/assets/img/regular-selatan.jpg') }}" alt="Reguler">
-                        <button class="detail-button" onclick="openPopup('Reguler')">Detail</button>
+            <!-- Brilliant Facilities -->
+            <div class="brilliant-section mt-5">
+                <h2 class="text-center mb-4">Brilliant</h2>
+                @if($brilliantFacilities->count() > 0)
+                    <div class="cards">
+                        @foreach($brilliantFacilities as $facility)
+                            <div class="card">
+                                <img src="{{ asset('/landing-page/assets/img/logos/C' . ($loop->iteration % 3 == 0 ? 3 : $loop->iteration % 3) . '.png') }}"
+                                    alt="Logo {{ $facility->tipe_kamar }}" class="card-logo">
+                            <h3>{{ $facility->nama_kamar }}</h3>
+                            <div class="image-container">
+                                <img src="{{ Storage::url($facility->image) }}" alt="{{ $facility->nama_kamar }}">
+                                <button class="detail-button" 
+                                    data-facility="{{ json_encode([
+                                        'title' => $facility->nama_kamar,
+                                        'description' => $facility->deskripsi
+                                    ]) }}" 
+                                    onclick="openPopup(this)">Detail</button>
+                            </div>
+                        </div>
+                        @endforeach
                     </div>
-                </div>
-
-                <div class="card">
-                    <img src="{{ asset('/landing-page/assets/img/logos/C1.png') }}" alt="Logo VIP" class="card-logo">
-                    <h3>VIP</h3>
-                    <div class="image-container">
-                        <img src="{{ asset('/landing-page/assets/img/vip-selatan.jpg') }}" alt="VIP">
-                        <button class="detail-button" onclick="openPopup('VIP')">Detail</button>
+                @else
+                    <div class="text-center py-5">
+                        <img src="{{ asset('/landing-page/assets/img/no-data.png') }}" alt="No Facilities" style="max-width: 200px;">
+                        <h4 class="mt-3">Belum ada kamar tersedia di Brilliant</h4>
+                        <p class="text-muted">Silakan cek kembali nanti</p>
                     </div>
-                </div>
-
-                <div class="card">
-                    <img src="{{ asset('/landing-page/assets/img/logos/C3.png') }}" alt="Logo VIP" class="card-logo">
-                    <h3>Homestay</h3>
-                    <div class="image-container">
-                        <img src="{{ asset('/landing-page/assets/img/homestay-selatan.jpg') }}" alt="Homestay">
-                        <button class="detail-button" onclick="openPopup('Homestay')">Detail</button>
-                    </div>
-                </div>
-            </div>
-            <div class="container text-center mt-5 mb-5">
-                <p
-                    style="font-family: 'Montserrat', sans-serif; font-weight: 500; color: #000000; font-size: 2rem; margin: 0;">
-                    Bieplus
-                </p>
+                @endif
             </div>
 
-            <div class="cards">
-                <div class="card">
-                    <img src="{{ asset('/landing-page/assets/img/logos/C2.png') }}" alt="Logo VIP" class="card-logo">
-                    <h3>Camp Bieplus</h3>
-                    <div class="image-container">
-                        <img src="{{ asset('/landing-page/assets/img/vvip-bieplus.jpg') }}" alt="Reguler">
-                        <button class="detail-button" onclick="openPopup('VVIP-Bieplus')">Detail</button>
+            <!-- BiePlus Facilities -->
+            <div class="bieplus-section mt-5">
+                <h2 class="text-center mb-4">BiePlus</h2>
+                @if($bieplusFacilities->count() > 0)
+                    <div class="cards">
+                        @foreach($bieplusFacilities as $facility)
+                            <div class="card">
+                                <img src="{{ asset('/landing-page/assets/img/logos/C' . ($loop->iteration % 3 == 0 ? 3 : $loop->iteration % 3) . '.png') }}"
+                                    alt="Logo {{ $facility->tipe_kamar }}" class="card-logo">
+                            <h3>{{ $facility->nama_kamar }}</h3>
+                            <div class="image-container">
+                                <img src="{{ Storage::url($facility->image) }}" alt="{{ $facility->nama_kamar }}">
+                                <button class="detail-button" 
+                                    data-facility="{{ json_encode([
+                                        'title' => $facility->nama_kamar,
+                                        'description' => $facility->deskripsi
+                                    ]) }}" 
+                                    onclick="openPopup(this)">Detail</button>
+                            </div>
+                        </div>
+                        @endforeach
                     </div>
-                </div>
-
-                <div class="card">
-                    <img src="{{ asset('/landing-page/assets/img/logos/C1.png') }}" alt="Logo VIP" class="card-logo">
-                    <h3>Ruang Kelas</h3>
-                    <div class="image-container">
-                        <img src="{{ asset('/landing-page/assets/img/kelas-bieplus.jpg') }}" alt="VIP">
-                        <button class="detail-button" onclick="openPopup('Kelas-Bieplus')">Detail</button>
+                @else
+                    <div class="text-center py-5">
+                        <img src="{{ asset('/landing-page/assets/img/no-data.png') }}" alt="No Facilities" style="max-width: 200px;">
+                        <h4 class="mt-3">Belum ada kamar tersedia di BiePlus</h4>
+                        <p class="text-muted">Silakan cek kembali nanti</p>
                     </div>
-                </div>
+                @endif
             </div>
-        </div>
 
-
-
-        <!-- Popup -->
-        <div id="popup" class="popup">
-            <div class="popup-content">
-                <span class="close" onclick="closePopup()">&times;</span>
-                <div class="popup-header">
-                    <h2 id="popup-title"></h2>
-                </div>
-                <div class="popup-body">
-                    <div class="popup-description">
-                        <pre id="popup-description"></pre>
-                    </div>
+            <!-- Facility Detail Popup -->
+            <div id="popup" class="popup">
+                <div class="popup-content">
+                    <span class="close-btn" onclick="closePopup()">&times;</span>
+                    <p id="popup-description" style="white-space: pre-line; margin-top: 20px;"></p>
                 </div>
             </div>
         </div>
@@ -316,148 +376,31 @@
                 <div class="carousel-container" style="margin-bottom: -400px;">
                     <button class="arrow-btn left" id="leftArrow" onclick="scrollCarousel(-300)">‹</button>
                     <div class="comment-carousel" id="commentCarousel">
-                        <div class="comment-card card">
-                            <div class="card-body text-center">
-                                <img src="{{ asset('/landing-page/assets/img/team/2.jpg') }}"
-                                    class="rounded-circle mb-3" alt="User"
-                                    style="width: 100px; height: 100px; object-fit: cover;">
-                                <h5 class="card-title">Aisyah Salsabila</h5>
-                                <p class="card-text">2024</p>
-                                <p class="card-text">Tempatnya nyaman banget, tutornya juga asik dan sabar ngajarinnya.
-                                    Aku jadi lebih percaya diri buat speaking. Recommended buat yang mau belajar bahasa
-                                    Inggris!</p>
-                                <div class="rating">
-                                    <span>⭐⭐⭐⭐⭐</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-card card">
-                            <div class="card-body text-center">
-                                <img src="{{ asset('/landing-page/assets/img/team/3.jpg') }}"
-                                    class="rounded-circle mb-3" alt="User"
-                                    style="width: 100px; height: 100px; object-fit: cover;">
-                                <h5 class="card-title">Rizky Pratama</h5>
-                                <p class="card-text">2023</p>
-                                <p class="card-text">Keren banget! Sistem belajarnya full English, jadi bener-bener
-                                    dipaksa buat ngomong. Camp-nya juga bersih dan nyaman, pokoknya top deh!</p>
-                                <div class="rating">
-                                    <span>⭐⭐⭐⭐⭐</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-card card">
-                            <div class="card-body text-center">
-                                <img src="{{ asset('/landing-page/assets/img/team/1.jpg') }}"
-                                    class="rounded-circle mb-3" alt="User"
-                                    style="width: 100px; height: 100px; object-fit: cover;">
-                                <h5 class="card-title">Dewi Lestari</h5>
-                                <p class="card-text">2024</p>
-                                <p class="card-text">Pengalaman belajar di sini seru banget! Tutornya ramah, metode
-                                    belajarnya juga gampang dipahami. Aku yang tadinya takut ngomong Inggris, sekarang
-                                    udah lumayan lancar.</p>
-                                <div class="rating">
-                                    <span>⭐⭐⭐⭐⭐</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-card card">
-                            <div class="card-body text-center">
-                                <img src="{{ asset('/landing-page/assets/img/team/3.jpg') }}"
-                                    class="rounded-circle mb-3" alt="User"
-                                    style="width: 100px; height: 100px; object-fit: cover;">
-                                <h5 class="card-title">Budi Santoso</h5>
-                                <p class="card-text">2023</p>
-                                <p class="card-text">Belajar di sini sangat membantu! Tutornya profesional dan suasana
-                                    belajarnya menyenangkan. Aku jadi lebih paham grammar dan vocab.</p>
-                                <div class="rating">
-                                    <span>⭐⭐⭐⭐⭐</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-card card">
-                            <div class="card-body text-center">
-                                <img src="{{ asset('/landing-page/assets/img/team/2.jpg') }}"
-                                    class="rounded-circle mb-3" alt="User"
-                                    style="width: 100px; height: 100px; object-fit: cover;">
-                                <h5 class="card-title">Siti Aminah</h5>
-                                <p class="card-text">2024</p>
-                                <p class="card-text">Aku suka banget belajar di sini! Lingkungannya mendukung buat
-                                    belajar bahasa Inggris. Tutornya juga sabar dan metode belajarnya efektif.</p>
-                                <div class="rating">
-                                    <span>⭐⭐⭐⭐⭐</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-card card">
-                            <div class="card-body text-center">
-                                <img src="{{ asset('/landing-page/assets/img/team/1.jpg') }}"
-                                    class="rounded-circle mb-3" alt="User"
-                                    style="width: 100px; height: 100px; object-fit: cover;">
-                                <h5 class="card-title">Ahmad Fauzi</h5>
-                                <p class="card-text">2023</p>
-                                <p class="card-text">Pengalaman belajar yang luar biasa! Aku bisa ningkatin speaking
-                                    skill dalam waktu singkat. Tempatnya juga nyaman dan bersih.</p>
-                                <div class="rating">
-                                    <span>⭐⭐⭐⭐⭐</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-card card">
-                            <div class="card-body text-center">
-                                <img src="{{ asset('/landing-page/assets/img/team/2.jpg') }}"
-                                    class="rounded-circle mb-3" alt="User"
-                                    style="width: 100px; height: 100px; object-fit: cover;">
-                                <h5 class="card-title">Lina Marlina</h5>
-                                <p class="card-text">2024</p>
-                                <p class="card-text">Tutornya ramah dan metode belajarnya sangat membantu. Aku jadi
-                                    lebih percaya diri berbicara dalam bahasa Inggris. Recommended!</p>
-                                <div class="rating">
-                                    <span>⭐⭐⭐⭐⭐</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-card card">
-                            <div class="card-body text-center">
-                                <img src="{{ asset('/landing-page/assets/img/team/1.jpg') }}"
-                                    class="rounded-circle mb-3" alt="User"
-                                    style="width: 100px; height: 100px; object-fit: cover;">
-                                <h5 class="card-title">Fajar Nugroho</h5>
-                                <p class="card-text">2023</p>
-                                <p class="card-text">Belajar di sini seru banget! Sistemnya full English, jadi terbiasa
-                                    ngomong tiap hari. Camp-nya juga nyaman dan bersih.</p>
-                                <div class="rating">
-                                    <span>⭐⭐⭐⭐⭐</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-card card">
-                            <div class="card-body text-center">
-                                <img src="{{ asset('/landing-page/assets/img/team/2.jpg') }}"
-                                    class="rounded-circle mb-3" alt="User"
-                                    style="width: 100px; height: 100px; object-fit: cover;">
-                                <h5 class="card-title">Rina Susanti</h5>
-                                <p class="card-text">2024</p>
-                                <p class="card-text">Aku sangat puas belajar di sini! Tutornya sabar dan metode
-                                    belajarnya mudah dipahami. Aku jadi lebih lancar speaking.</p>
-                                <div class="rating">
-                                    <span>⭐⭐⭐⭐⭐</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-card card">
-                            <div class="card-body text-center">
-                                <img src="{{ asset('/landing-page/assets/img/team/1.jpg') }}"
-                                    class="rounded-circle mb-3" alt="User"
-                                    style="width: 100px; height: 100px; object-fit: cover;">
-                                <h5 class="card-title">Eko Prasetyo</h5>
-                                <p class="card-text">2023</p>
-                                <p class="card-text">Pengalaman belajar yang tak terlupakan! Tutornya profesional,
-                                    lingkungannya nyaman, dan metode belajarnya sangat efektif.</p>
-                                <div class="rating">
-                                    <span>⭐⭐⭐⭐⭐</span>
-                                </div>
-                            </div>
-                        </div>
+                        @if($reviews->count() > 0)
+        @foreach($reviews as $review)
+        <div class="comment-card card">
+            <div class="card-body text-center">
+                <img src="{{ Storage::url($review->avatar) }}" class="rounded-circle mb-3" alt="User" 
+                    style="width: 100px; height: 100px; object-fit: cover;">
+                <h5 class="card-title">{{ $review->name }}</h5>
+                <p class="card-text">{{ $review->year }}</p>
+                <p class="card-text">{{ $review->content }}</p>
+                <div class="rating d-flex justify-content-center">
+                    <span>{{ str_repeat('⭐', $review->rating) }}</span>
+                </div>
+            </div>
+        </div>
+    @endforeach
+    @else
+        <div class="comment-card card">
+            <div class="card-body text-center">
+                <img src="{{ asset('/landing-page/assets/img/no-data.png') }}" class="mb-3" alt="No Reviews" 
+                    style="max-width: 150px;">
+                <h5 class="card-title">Belum Ada Ulasan</h5>
+                <p class="card-text">Jadilah yang pertama memberikan ulasan!</p>
+            </div>
+        </div>
+    @endif
                     </div>
                     <button class="arrow-btn right" id="rightArrow" onclick="scrollCarousel(300)">›</button>
                 </div>
@@ -469,7 +412,9 @@
             <img src="{{ asset('/landing-page/assets/img/logos/pesan.png') }}" alt="Tambah Pesan Icon"
                 class="feedback-icon">
             <span class="feedback-text">Butuh bantuan? Chat disini...</span>
-            <a href="#formKesanPesan" class="feedback-btn">Chat</a>
+            <button type="button" class="feedback-btn" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                Chat
+            </button>
         </div>
     </section>
     <a href="https://wa.me/6281234567890?text=Halo%20saya%20butuh%20bantuan%20tentang%20B-Camp"
@@ -507,8 +452,54 @@
             width: 30px;
             height: 30px;
         }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 10px;
+            top: 5px;
+            font-size: 24px;
+            cursor: pointer;
+        }
     </style>
 
+    <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Berikan Ulasan Untuk Brilliant Camp !</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="alert-container"></div>
+                    <livewire:create-review />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @livewireScripts
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -532,40 +523,23 @@
     });
 </script>
 <script>
-    // Replace your existing openPopup function
-    function openPopup(campType) {
-        const popup = document.getElementById('popup');
-        const title = document.getElementById('popup-title');
-        const description = document.getElementById('popup-description');
-
-        const details = campDetails[campType];
-
-        if (details) {
-            title.textContent = details.title;
-            description.textContent = details.description;
-            popup.style.display = 'block';
-        }
+    function openPopup(button) {
+        const facility = JSON.parse(button.dataset.facility);
+        document.getElementById('popup-description').textContent = facility.description;
+        document.getElementById('popup').style.display = 'flex';
     }
-</script>
-<script>
+
     function closePopup() {
-        const popup = document.getElementById('popup');
-        popup.style.display = 'none';
+        document.getElementById('popup').style.display = 'none';
     }
 
-    // Also add close on escape key and outside click
-    window.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') {
+    // Close popup when clicking outside
+    window.onclick = function (event) {
+        const popup = document.getElementById('popup');
+        if (event.target == popup) {
             closePopup();
         }
-    });
-
-    // Close when clicking outside the popup content
-    document.querySelector('.popup').addEventListener('click', function (event) {
-        if (event.target === this) {
-            closePopup();
-        }
-    });
+    }
 </script>
 <script>
     const carousel = document.getElementById('commentCarousel');
@@ -656,60 +630,25 @@
     });
 </script>
 <script>
-    // Add this at the beginning of your script section
     const campDetails = {
-        'Reguler': {
-            title: 'Kamar Reguler',
-            description: 'Kamar standar yang nyaman untuk 4 orang dengan fasilitas:\n' +
-                '• 2 tempat tidur tingkat\n' +
-                '• Lemari pakaian\n' +
-                '• Meja belajar\n' +
-                '• Kamar mandi bersama\n' +
-                '• Area WiFi'
-        },
-        'VIP': {
-            title: 'Kamar VIP',
-            description: 'Kamar premium untuk 2 orang dengan fasilitas:\n' +
-                '• 2 tempat tidur terpisah\n' +
-                '• AC\n' +
-                '• Lemari pakaian pribadi\n' +
-                '• Meja belajar pribadi\n' +
-                '• Kamar mandi dalam\n' +
-                '• WiFi kecepatan tinggi'
-        },
-        'Homestay': {
-            title: 'Kamar Homestay',
-            description: 'Pengalaman menginap seperti di rumah dengan fasilitas:\n' +
-                '• Kamar pribadi\n' +
-                '• AC\n' +
-                '• Ruang tamu\n' +
-                '• Dapur bersama\n' +
-                '• Kamar mandi dalam\n' +
-                '• WiFi premium'
-        },
-        'VVIP-Bieplus': {
-            title: 'VVIP Bieplus',
-            description: 'Kamar super premium dengan fasilitas terlengkap:\n' +
-                '• Kamar luas untuk 1-2 orang\n' +
-                '• AC\n' +
-                '• Smart TV\n' +
-                '• Mini pantry\n' +
-                '• Kamar mandi mewah\n' +
-                '• WiFi dedicated\n' +
-                '• Ruang belajar pribadi'
-        },
-        'Kelas-Bieplus': {
-            title: 'Ruang Kelas Bieplus',
-            description: 'Fasilitas pembelajaran modern:\n' +
-                '• Smart board\n' +
-                '• Proyektor HD\n' +
-                '• Sound system\n' +
-                '• AC\n' +
-                '• Meja kursi ergonomis\n' +
-                '• WiFi kecepatan tinggi\n' +
-                '• Kapasitas hingga 20 orang'
-        }
+        @foreach($brilliantFacilities->concat($bieplusFacilities) as $facility)
+                    '{{ $facility->id }}': {
+                title: '{{ $facility->nama_kamar }}',
+                description: 'Tipe: {{ $facility->tipe_kamar }}\n' +
+                    'Gender: {{ $facility->gender }}\n' +
+                    'Harga: Rp {{ number_format($facility->harga, 0, ',', '.') }}\n' +
+                    '{{ $facility->deskripsi }}'
+            },
+        @endforeach
     };
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('reviewModal');
+        modal.addEventListener('show.bs.modal', function (e) {
+            console.log('Modal is opening');
+        });
+    });
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -753,46 +692,56 @@
         }
 
         // Scroll functions
-        function scrollCarousel(distance) {
-            const currentScroll = carouselItems.scrollLeft;
-            const targetScroll = currentScroll + distance;
+        function scrollCarousel(distance) { }
+        const currentScroll = carouselItems.scrollLeft;
+        const targetScroll = currentScroll + distance;
 
-            carouselItems.scrollTo({
-                left: targetScroll,
-                behavior: 'smooth'
-            });
-        }
+        carouselItems.scrollTo({
+            left: targetScroll,
+            behavior: 'smooth'
+        });
+    }
 
         // Arrow click handlers
-        document.getElementById('leftArrow').addEventListener('click', () => {
+        document.getElementById('leftArrow').addEventListener('click', () => { }
             scrollCarousel(-300);
         });
 
-        document.getElementById('rightArrow').addEventListener('click', () => {
+    document.getElementById('rightArrow').addEventListener('click', () => { }
             scrollCarousel(300);
         });
 
-        // Touch events for mobile
-        carouselItems.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].pageX - carouselItems.offsetLeft;
-            scrollLeft = carouselItems.scrollLeft;
-        });
+    // Touch events for mobile
+    carouselItems.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].pageX - carouselItems.offsetLeft;
+        scrollLeft = carouselItems.scrollLeft;
+    });
 
-        carouselItems.addEventListener('touchmove', (e) => {
+    carouselItems.addEventListener('touchmove', (e) => { }
             if (!startX) return;
-            const x = e.touches[0].pageX - carouselItems.offsetLeft;
-            const walk = (x - startX) * 2;
-            carouselItems.scrollLeft = scrollLeft - walk;
+    const x = e.touches[0].pageX - carouselItems.offsetLeft;
+    const walk = (x - startX) * 2;
+    carouselItems.scrollLeft = scrollLeft - walk;
         });
 
-        carouselItems.addEventListener('touchend', () => {
-            startX = null;
-        });
+    carouselItems.addEventListener('touchend', () => {
+        startX = null;
+    });
 
-        // Initialize
-        updateArrows();
-        window.addEventListener('resize', updateArrows);
+    // Initialize
+    updateArrows();
+    window.addEventListener('resize', updateArrows);
     });
 </script>
 
-</html>
+<script>
+    // Auto close alert after 3 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        let alert = document.querySelector('.alert');
+        if(alert) {
+            setTimeout(function() {
+                alert.remove();
+            }, 3000);
+        }
+    });
+</script>

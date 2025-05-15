@@ -10,6 +10,8 @@ return new class extends Migration
     {
         Schema::create('gallery_videos', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable();
+            $table->text('description')->nullable();
             $table->enum('type', ['file', 'url']);
             $table->string('video_path')->nullable();
             $table->string('video_url')->nullable();
