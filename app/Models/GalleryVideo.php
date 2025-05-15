@@ -11,6 +11,8 @@ class GalleryVideo extends Model
     use LogsActivity;
 
     protected $fillable = [
+        'title',
+        'description',
         'type',
         'video_path',
         'video_url'

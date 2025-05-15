@@ -26,6 +26,16 @@ class GalleryVideoResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('title')
+                    ->label('Judul')
+                    ->required()
+                    ->maxLength(255),
+
+                Forms\Components\Textarea::make('description')
+                    ->label('Deskripsi')
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+
                 Forms\Components\Select::make('type')
                     ->options([
                         'file' => 'Upload File',
@@ -56,6 +66,9 @@ class GalleryVideoResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Judul')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('type')
                     ->label('Tipe')
                     ->badge(),
