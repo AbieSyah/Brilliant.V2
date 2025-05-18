@@ -79,6 +79,9 @@
                             <a class="nav-link active" href="#Beranda">Beranda</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="#status-kamar">Status Kamar</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="#galeri">Galeri</a>
                         </li>
                         <li class="nav-item">
@@ -92,6 +95,261 @@
             </div>
         </div>
     </nav>
+
+    <style>
+        .room-grid {
+            margin-bottom: 2rem;
+        }
+
+        .room-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 0.75rem;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+            margin: 4px;
+            width: 60px;
+            height: 60px;
+            display: inline-flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .room-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .room-card.available {
+            border: 1px solid #4CAF50;
+        }
+
+        .room-card.occupied {
+            border: 1px solid #f44336;
+            background-color: #ffebee;
+        }
+
+        .room-number {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: #333;
+        }
+
+        .room-status {
+            font-size: 0.65rem;
+            color: #666;
+        }
+
+        .room-section {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            border: 1px solid rgba(81, 146, 89, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .room-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .room-type-title {
+            color: #519259;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .room-type-title::before {
+            content: '';
+            display: block;
+            width: 30px;
+            height: 3px;
+            background: #519259;
+            border-radius: 2px;
+        }
+
+        .room-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 0.75rem;
+            text-align: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            margin: 4px;
+            width: 65px;
+            height: 65px;
+            display: inline-flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .room-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #519259;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .room-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .room-card.available {
+            border: 1.5px solid #4CAF50;
+            background: linear-gradient(145deg, #ffffff, #f8fff8);
+        }
+
+        .room-card.occupied {
+            border: 1.5px solid #f44336;
+            background: linear-gradient(145deg, #fff5f5, #ffebee);
+        }
+
+        .room-number {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+            color: #2c3e50;
+        }
+
+        .room-status {
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .rooms-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .legend-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: #f8f9fa;
+            transition: transform 0.2s ease;
+        }
+
+        .legend-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 4px;
+        }
+
+        .legend-color.available {
+            background: #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .legend-color.occupied {
+            background: #f44336;
+            box-shadow: 0 0 10px rgba(244, 67, 54, 0.3);
+        }
+
+        .legend-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+    </style>
+
+    <section id="status-kamar" class="py-5" style="background-color: #f8f9fa;">
+        <div class="container" style="max-width: 900px;">
+            <h2 class="text-center fw-bold mb-4" style="color: #519259; font-size: 2rem;">Status <span
+                    style="color:#000;">Kamar</span></h2>
+
+            <!-- Brilliant Rooms -->
+            <div class="room-section">
+                <div class="room-type-title">Brilliant - 30 Kamar</div>
+                <div class="rooms-container">
+                    @php
+                        $brilliantRooms = 30;
+                        $brilliantOccupied = [1, 5, 10, 15];
+                    @endphp
+
+                    @for ($i = 1; $i <= $brilliantRooms; $i++)
+                        <div class="room-card {{ in_array($i, $brilliantOccupied) ? 'occupied' : 'available' }}">
+                            <div class="room-number">{{ $i }}</div>
+                            <div class="room-status">
+                                {{ in_array($i, $brilliantOccupied) ? 'Terisi' : 'Kosong' }}
+                            </div>
+                        </div>
+                    @endfor
+                </div>
+            </div>
+
+            <!-- BiePlus Rooms -->
+            <div class="room-section">
+                <div class="room-type-title">BiePlus - 50 Kamar</div>
+                <div class="rooms-container">
+                    @php
+                        $biePlusRooms = 50;
+                        $biePlusOccupied = [2, 7, 12, 20, 25];
+                    @endphp
+
+                    @for ($i = 1; $i <= $biePlusRooms; $i++)
+                        <div class="room-card {{ in_array($i, $biePlusOccupied) ? 'occupied' : 'available' }}">
+                            <div class="room-number">{{ $i }}</div>
+                            <div class="room-status">
+                                {{ in_array($i, $biePlusOccupied) ? 'Terisi' : 'Kosong' }}
+                            </div>
+                        </div>
+                    @endfor
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="text-center mt-3">
+                <div class="legend-item">
+                    <span class="legend-color available"></span>
+                    <span class="legend-text">Kosong</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color occupied"></span>
+                    <span class="legend-text">Terisi</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <style>
         .gallery-heading {
@@ -284,10 +542,12 @@
         <div class="container text-center">
             <!-- Section Header -->
             <div class="text-center">
-                <h2 style="font-family: 'Montserrat', sans-serif; font-weight: 800; color: #4E6C50; font-size: 2.5rem; margin-bottom: 10px;">
+                <h2
+                    style="font-family: 'Montserrat', sans-serif; font-weight: 800; color: #4E6C50; font-size: 2.5rem; margin-bottom: 10px;">
                     Fasilitas
                 </h2>
-                <p style="font-family: 'Montserrat', sans-serif; font-weight: 500; color: #000000; font-size: 1.1rem; margin: 0;">
+                <p
+                    style="font-family: 'Montserrat', sans-serif; font-weight: 500; color: #000000; font-size: 1.1rem; margin: 0;">
                     Jelajahi Asrama dan Fasilitas lainnya di B-Camp!
                 </p>
             </div>
@@ -298,25 +558,24 @@
                 @if($brilliantFacilities->count() > 0)
                     <div class="cards">
                         @foreach($brilliantFacilities as $facility)
-                            <div class="card">
-                                <img src="{{ asset('/landing-page/assets/img/logos/C' . ($loop->iteration % 3 == 0 ? 3 : $loop->iteration % 3) . '.png') }}"
-                                    alt="Logo {{ $facility->tipe_kamar }}" class="card-logo">
-                            <h3>{{ $facility->nama_kamar }}</h3>
-                            <div class="image-container">
-                                <img src="{{ Storage::url($facility->image) }}" alt="{{ $facility->nama_kamar }}">
-                                <button class="detail-button" 
-                                    data-facility="{{ json_encode([
-                                        'title' => $facility->nama_kamar,
-                                        'description' => $facility->deskripsi
-                                    ]) }}" 
-                                    onclick="openPopup(this)">Detail</button>
-                            </div>
-                        </div>
+                                        <div class="card">
+                                            <img src="{{ asset('/landing-page/assets/img/logos/C' . ($loop->iteration % 3 == 0 ? 3 : $loop->iteration % 3) . '.png') }}"
+                                                alt="Logo {{ $facility->tipe_kamar }}" class="card-logo">
+                                            <h3>{{ $facility->nama_kamar }}</h3>
+                                            <div class="image-container">
+                                                <img src="{{ Storage::url($facility->image) }}" alt="{{ $facility->nama_kamar }}">
+                                                <button class="detail-button" data-facility="{{ json_encode([
+                                'title' => $facility->nama_kamar,
+                                'description' => $facility->deskripsi
+                            ]) }}" onclick="openPopup(this)">Detail</button>
+                                            </div>
+                                        </div>
                         @endforeach
                     </div>
                 @else
                     <div class="text-center py-5">
-                        <img src="{{ asset('/landing-page/assets/img/no-data.png') }}" alt="No Facilities" style="max-width: 200px;">
+                        <img src="{{ asset('/landing-page/assets/img/no-data.png') }}" alt="No Facilities"
+                            style="max-width: 200px;">
                         <h4 class="mt-3">Belum ada kamar tersedia di Brilliant</h4>
                         <p class="text-muted">Silakan cek kembali nanti</p>
                     </div>
@@ -329,25 +588,24 @@
                 @if($bieplusFacilities->count() > 0)
                     <div class="cards">
                         @foreach($bieplusFacilities as $facility)
-                            <div class="card">
-                                <img src="{{ asset('/landing-page/assets/img/logos/C' . ($loop->iteration % 3 == 0 ? 3 : $loop->iteration % 3) . '.png') }}"
-                                    alt="Logo {{ $facility->tipe_kamar }}" class="card-logo">
-                            <h3>{{ $facility->nama_kamar }}</h3>
-                            <div class="image-container">
-                                <img src="{{ Storage::url($facility->image) }}" alt="{{ $facility->nama_kamar }}">
-                                <button class="detail-button" 
-                                    data-facility="{{ json_encode([
-                                        'title' => $facility->nama_kamar,
-                                        'description' => $facility->deskripsi
-                                    ]) }}" 
-                                    onclick="openPopup(this)">Detail</button>
-                            </div>
-                        </div>
+                                        <div class="card">
+                                            <img src="{{ asset('/landing-page/assets/img/logos/C' . ($loop->iteration % 3 == 0 ? 3 : $loop->iteration % 3) . '.png') }}"
+                                                alt="Logo {{ $facility->tipe_kamar }}" class="card-logo">
+                                            <h3>{{ $facility->nama_kamar }}</h3>
+                                            <div class="image-container">
+                                                <img src="{{ Storage::url($facility->image) }}" alt="{{ $facility->nama_kamar }}">
+                                                <button class="detail-button" data-facility="{{ json_encode([
+                                'title' => $facility->nama_kamar,
+                                'description' => $facility->deskripsi
+                            ]) }}" onclick="openPopup(this)">Detail</button>
+                                            </div>
+                                        </div>
                         @endforeach
                     </div>
                 @else
                     <div class="text-center py-5">
-                        <img src="{{ asset('/landing-page/assets/img/no-data.png') }}" alt="No Facilities" style="max-width: 200px;">
+                        <img src="{{ asset('/landing-page/assets/img/no-data.png') }}" alt="No Facilities"
+                            style="max-width: 200px;">
                         <h4 class="mt-3">Belum ada kamar tersedia di BiePlus</h4>
                         <p class="text-muted">Silakan cek kembali nanti</p>
                     </div>
@@ -377,30 +635,30 @@
                     <button class="arrow-btn left" id="leftArrow" onclick="scrollCarousel(-300)">‹</button>
                     <div class="comment-carousel" id="commentCarousel">
                         @if($reviews->count() > 0)
-        @foreach($reviews as $review)
-        <div class="comment-card card">
-            <div class="card-body text-center">
-                <img src="{{ Storage::url($review->avatar) }}" class="rounded-circle mb-3" alt="User" 
-                    style="width: 100px; height: 100px; object-fit: cover;">
-                <h5 class="card-title">{{ $review->name }}</h5>
-                <p class="card-text">{{ $review->year }}</p>
-                <p class="card-text">{{ $review->content }}</p>
-                <div class="rating d-flex justify-content-center">
-                    <span>{{ str_repeat('⭐', $review->rating) }}</span>
-                </div>
-            </div>
-        </div>
-    @endforeach
-    @else
-        <div class="comment-card card">
-            <div class="card-body text-center">
-                <img src="{{ asset('/landing-page/assets/img/no-data.png') }}" class="mb-3" alt="No Reviews" 
-                    style="max-width: 150px;">
-                <h5 class="card-title">Belum Ada Ulasan</h5>
-                <p class="card-text">Jadilah yang pertama memberikan ulasan!</p>
-            </div>
-        </div>
-    @endif
+                            @foreach($reviews as $review)
+                                <div class="comment-card card">
+                                    <div class="card-body text-center">
+                                        <img src="{{ Storage::url($review->avatar) }}" class="rounded-circle mb-3" alt="User"
+                                            style="width: 100px; height: 100px; object-fit: cover;">
+                                        <h5 class="card-title">{{ $review->name }}</h5>
+                                        <p class="card-text">{{ $review->year }}</p>
+                                        <p class="card-text">{{ $review->content }}</p>
+                                        <div class="rating d-flex justify-content-center">
+                                            <span>{{ str_repeat('⭐', $review->rating) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="comment-card card">
+                                <div class="card-body text-center">
+                                    <img src="{{ asset('/landing-page/assets/img/no-data.png') }}" class="mb-3"
+                                        alt="No Reviews" style="max-width: 150px;">
+                                    <h5 class="card-title">Belum Ada Ulasan</h5>
+                                    <p class="card-text">Jadilah yang pertama memberikan ulasan!</p>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                     <button class="arrow-btn right" id="rightArrow" onclick="scrollCarousel(300)">›</button>
                 </div>
@@ -632,7 +890,7 @@
 <script>
     const campDetails = {
         @foreach($brilliantFacilities->concat($bieplusFacilities) as $facility)
-                    '{{ $facility->id }}': {
+                                '{{ $facility->id }}': {
                 title: '{{ $facility->nama_kamar }}',
                 description: 'Tipe: {{ $facility->tipe_kamar }}\n' +
                     'Gender: {{ $facility->gender }}\n' +
@@ -736,10 +994,10 @@
 
 <script>
     // Auto close alert after 3 seconds
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         let alert = document.querySelector('.alert');
-        if(alert) {
-            setTimeout(function() {
+        if (alert) {
+            setTimeout(function () {
                 alert.remove();
             }, 3000);
         }
