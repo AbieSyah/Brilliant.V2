@@ -446,96 +446,55 @@
         }
     </style>
 
+    <!-- Gallery Section -->
     <section id="galeri-bcamp" class="py-5" style="background-color: #f3f8f4;">
         <div class="container" style="max-width: 1100px;">
             <h2 class="text-center fw-bold mb-5" style="color: #519259; font-size: 2.8rem;">Galeri <span
                     style="color:#000;">B-Camp</span></h2>
-            <div class="container" style="max-width: 1100px;">
-                <!-- Item 1 - Gambar Kiri -->
-                <div class="row align-items-center mb-5">
-                    <div class="col-md-6">
-                        <img src="{{ asset('/landing-page/assets/img/g1.jpg') }}"
-                            class="img-fluid rounded-4 shadow gallery-img" alt="Foto 1">
-                    </div>
-                    <div class="col-md-6 ps-md-4 pt-4 pt-md-0">
-                        <h3 class="gallery-heading">📸 Keseruan Hari Pertama!</h3>
-                        <p class="gallery-desc">Lihat bagaimana para peserta saling berkenalan dan langsung akrab dalam
-                            suasana yang hangat dan fun!</p>
-                    </div>
-                </div>
 
-                <!-- Item 2 - Video Kanan -->
-                <div class="row align-items-center flex-md-row-reverse mb-5">
-                    <div class="col-md-6">
-                        <div class="ratio ratio-16x9 rounded-4 shadow gallery-video">
-                            <iframe src="https://www.youtube.com/embed/zBR5A-fGPqk" title="Video Kegiatan"
-                                allowfullscreen></iframe>
+            @if(count($gallery) > 0)
+                @foreach($gallery as $index => $item)
+                    @if($item['type'] === 'photo')
+                        <!-- Photo Item -->
+                        <div class="row align-items-center {{ $index % 2 == 0 ? '' : 'flex-md-row-reverse' }} mb-5">
+                            <div class="col-md-6">
+                                <img src="{{ Storage::url($item['item']->image) }}" class="img-fluid rounded-4 shadow gallery-img" alt="{{ $item['item']->title }}">
+                            </div>
+                            <div class="col-md-6 {{ $index % 2 == 0 ? 'ps-md-4' : 'pe-md-4' }} pt-4 pt-md-0">
+                                <h3 class="gallery-heading">{{ $item['item']->title }}</h3>
+                                <p class="gallery-desc">{{ $item['item']->description }}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6 pe-md-4 pt-4 pt-md-0">
-                        <h3 class="gallery-heading">🎬 Dokumentasi Seru Banget!</h3>
-                        <p class="gallery-desc">Tonton cuplikan kegiatan outdoor yang bikin ngakak tapi juga penuh
-                            pembelajaran kerjasama!</p>
-                    </div>
-                </div>
-
-                <!-- Item 3 - Gambar Kiri -->
-                <div class="row align-items-center mb-5">
-                    <div class="col-md-6">
-                        <img src="{{ asset('/landing-page/assets/img/g2.jpg') }}"
-                            class="img-fluid rounded-4 shadow gallery-img" alt="Foto 2">
-                    </div>
-                    <div class="col-md-6 ps-md-4 pt-4 pt-md-0">
-                        <h3 class="gallery-heading">👭 Kebersamaan di Asrama</h3>
-                        <p class="gallery-desc">Waktu malam hari di asrama jadi tempat paling seru buat saling cerita
-                            dan
-                            berbagi pengalaman.</p>
-                    </div>
-                </div>
-
-                <!-- Item 4 - Gambar Kanan -->
-                <div class="row align-items-center flex-md-row-reverse mb-5">
-                    <div class="col-md-6">
-                        <img src="{{ asset('/landing-page/assets/img/g3.jpg') }}"
-                            class="img-fluid rounded-4 shadow gallery-img" alt="Foto 3">
-                    </div>
-                    <div class="col-md-6 pe-md-4 pt-4 pt-md-0">
-                        <h3 class="gallery-heading">📖 Belajar Sambil Ketawa</h3>
-                        <p class="gallery-desc">Belajar di B-Camp nggak bikin bosan. Suasananya cair dan instruktur
-                            ramah
-                            banget!</p>
-                    </div>
-                </div>
-
-                <!-- Item 5 - Video Kiri -->
-                <div class="row align-items-center mb-5">
-                    <div class="col-md-6">
-                        <div class="ratio ratio-16x9 rounded-4 shadow gallery-video">
-                            <iframe src="https://www.youtube.com/embed/IZaShdlFUVI" title="Video Kegiatan 2"
-                                allowfullscreen></iframe>
+                    @else
+                        <!-- Video Item -->
+                        <div class="row align-items-center {{ $index % 2 == 0 ? '' : 'flex-md-row-reverse' }} mb-5">
+                            <div class="col-md-6">
+                                <div class="ratio ratio-16x9 rounded-4 shadow gallery-video">
+                                    @if($item['item']->type === 'file')
+                                        <video controls>
+                                            <source src="{{ Storage::url($item['item']->video_path) }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    @else
+                                        <iframe src="{{ $item['item']->video_url }}" title="{{ $item['item']->title }}" allowfullscreen></iframe>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-6 {{ $index % 2 == 0 ? 'ps-md-4' : 'pe-md-4' }} pt-4 pt-md-0">
+                                <h3 class="gallery-heading">{{ $item['item']->title }}</h3>
+                                <p class="gallery-desc">{{ $item['item']->description }}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6 ps-md-4 pt-4 pt-md-0">
-                        <h3 class="gallery-heading">🏃‍♂️ Games Team Building</h3>
-                        <p class="gallery-desc">Challenge teamwork di lapangan! Semuanya semangat, saling support, dan
-                            ketawa bareng!</p>
-                    </div>
+                    @endif
+                @endforeach
+            @else
+                <div class="text-center py-5">
+                    <img src="{{ asset('/landing-page/assets/img/no-data.png') }}" alt="No Gallery Items" style="max-width: 200px;">
+                    <h4 class="mt-3">Belum ada konten galeri</h4>
+                    <p class="text-muted">Silakan cek kembali nanti</p>
                 </div>
-
-                <!-- Item 6 - Gambar Kanan -->
-                <div class="row align-items-center flex-md-row-reverse mb-5">
-                    <div class="col-md-6">
-                        <img src="{{ asset('/landing-page/assets/img/g4.jpg') }}"
-                            class="img-fluid rounded-4 shadow gallery-img" alt="Foto 4">
-                    </div>
-                    <div class="col-md-6 pe-md-4 pt-4 pt-md-0">
-                        <h3 class="gallery-heading">📖 Belajar Sambil Ketawa</h3>
-                        <p class="gallery-desc">Belajar di B-Camp nggak bikin bosan. Suasananya cair dan instruktur
-                            ramah
-                            banget!</p>
-                    </div>
-                </div>
-            </div>
+            @endif
+        </div>
     </section>
 
     <section class="fasilitas-section" id="fasilitas">
