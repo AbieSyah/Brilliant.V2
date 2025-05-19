@@ -2,8 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\UserAplikasiController;
-use App\Http\Controllers\Api\KamarController;
+use App\Http\Controllers\Api\AuthControllerApi;
+use App\Http\Controllers\Api\UserProfileController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -15,24 +16,10 @@ use App\Http\Controllers\Api\KamarController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+// Keep existing token route for admin login
+Route::post('/token', [AuthControllerApi::class, 'requestToken']);
 
-// UserAolikasi routes
-Route::post('register', [UserAplikasiController::class, 'register']);
-Route::post('login', [UserAplikasiController::class, 'login']);
-
+// Protected routes requiring authentication
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('profile', [UserAplikasiController::class, 'getProfile']);
-    Route::post('logout', [UserAplikasiController::class, 'logout']);
-    Route::put('profile/update', [UserAplikasiController::class, 'updateProfile']);
-});
-
-// Kamar routes - all public routes
-Route::get('kamar', [KamarController::class, 'index']);
-Route::get('kamar/{id}', [KamarController::class, 'show']);
-
-// Kamar routes - Protected routes for admin operations
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('kamar', [KamarController::class, 'store']);
-    Route::put('kamar/{id}', [KamarController::class, 'update']);
-    Route::delete('kamar/{id}', [KamarController::class, 'destroy']);
+    Route::apiResource('/user-profiles', UserProfileController::class);
 });

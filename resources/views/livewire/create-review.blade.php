@@ -15,16 +15,16 @@
         <div class="mb-3">
             <label class="form-label">Rating</label>
             <div class="rating">
-                @for ($i = 5; $i >= 1; $i--)
+                @for ($i = 1; $i <= 5; $i++)
                     <input type="radio" id="star{{ $i }}" wire:model="rating" value="{{ $i }}">
-                    <label for="star{{ $i }}">&#9733;</label>
+                    <label for="star{{ $i }}" class="star">&#9733;</label>
                 @endfor
             </div>
             @error('rating') <span class="text-danger small">{{ $message }}</span> @enderror
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Tulis Ulasan Anda D</label>
+            <label class="form-label">Tulis Ulasan Anda Disini</label>
             <textarea class="form-control" wire:model="content" rows="4"></textarea>
             @error('content') <span class="text-danger small">{{ $message }}</span> @enderror
         </div>

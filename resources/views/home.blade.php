@@ -17,6 +17,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="shortcut icon"href="{{ asset('landing-page/assets/img/b_camp_logo1.png') }}" type="image/x-icon">
     @livewireStyles
 </head>
 
