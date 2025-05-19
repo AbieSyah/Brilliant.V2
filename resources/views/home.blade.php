@@ -36,7 +36,7 @@
                     <span class="highlight">Booking Camp <br>Pilihan Kamu Di</span><br> <span
                         class="camp-name">Brilliant Camp</span>
                 </h1>
-                <button class="hero-button" onclick="window.location.href='#booking'">Selengkapnya</button>
+                <button class="hero-button" onclick="window.location.href='#fasilitas'">Selengkapnya</button>
                 <p class="hero-subtext">By Brilliant English Course</p>
             </div>
         </div>
@@ -83,7 +83,7 @@
                             <a class="nav-link" href="#status-kamar">Status Kamar</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#galeri">Galeri</a>
+                            <a class="nav-link" href="#galeri-bcamp">Galeri</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#fasilitas">Fasilitas</a>
@@ -629,9 +629,9 @@
         <div class="add-feedback text-center my-5" id="chat" style="margin-bottom: auto">
             <img src="{{ asset('/landing-page/assets/img/logos/pesan.png') }}" alt="Tambah Pesan Icon"
                 class="feedback-icon">
-            <span class="feedback-text">Butuh bantuan? Chat disini...</span>
+            <span class="feedback-text">Berikan Ulasan Anda Untuk Brilliant !</span>
             <button type="button" class="feedback-btn" data-bs-toggle="modal" data-bs-target="#reviewModal">
-                Chat
+                Beri Ulasan
             </button>
         </div>
     </section>
