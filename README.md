@@ -93,7 +93,3 @@ php artisan optimize:clear
 ```bash
 php artisan make:migration create_table_name
 ```
-
-## License
-
-[MIT License](LICENSE.md)
