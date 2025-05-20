@@ -10,7 +10,7 @@ class BookingCalendar extends Model
     protected $table = 'booking_calendar';
     
     protected $fillable = [
-        'detail_kamar_id',
+        'kamar_id',
         'start_date',
         'end_date',
         'quantity'
@@ -21,15 +21,15 @@ class BookingCalendar extends Model
         'end_date' => 'date'
     ];
 
-    public function detailKamar(): BelongsTo
+    public function kamar(): BelongsTo
     {
-        return $this->belongsTo(DetailKamar::class);
+        return $this->belongsTo(Kamar::class);
     }
 
     // Helper method to check availability
     public function isAvailable($startDate, $endDate): bool
     {
-        return !static::where('detail_kamar_id', $this->detail_kamar_id)
+        return !static::where('kamar_id', $this->kamar_id)
             ->where(function ($query) use ($startDate, $endDate) {
                 $query->whereBetween('start_date', [$startDate, $endDate])
                     ->orWhereBetween('end_date', [$startDate, $endDate])

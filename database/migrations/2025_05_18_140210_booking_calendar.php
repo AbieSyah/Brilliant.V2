@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('booking_calendar', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('detail_kamar_id')
-                  ->constrained('detail_kamar')
+            $table->foreignId('kamar_id')
+                  ->constrained('kamar')
                   ->cascadeOnDelete();
             $table->date('start_date');
             $table->date('end_date');
