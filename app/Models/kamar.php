@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Kamar extends Model
 {
@@ -11,16 +11,11 @@ class Kamar extends Model
     
     protected $fillable = [
         'nama_kamar',
-        'deskripsi',
-        'gender',
-        'type_kamar',
-        'kategori',
-        'gambar',
-        'harga'
+        'deskripsi'
     ];
 
-    public function detailKamars(): HasMany
+    public function detailKamar(): HasOne
     {
-        return $this->hasMany(DetailKamar::class);
+        return $this->hasOne(DetailKamar::class);
     }
 }

@@ -448,7 +448,7 @@
     </style>
 
     <!-- Gallery Section -->
-    <section id="galeri-bcamp" class="py-5" style="background-color: #f3f8f4;">
+    <section id="galeri" class="py-5" style="background-color: #f3f8f4;">
         <div class="container" style="max-width: 1100px;">
             <h2 class="text-center fw-bold mb-5" style="color: #519259; font-size: 2.8rem;">Galeri <span
                     style="color:#000;">B-Camp</span></h2>
@@ -459,7 +459,8 @@
                         <!-- Photo Item -->
                         <div class="row align-items-center {{ $index % 2 == 0 ? '' : 'flex-md-row-reverse' }} mb-5">
                             <div class="col-md-6">
-                                <img src="{{ Storage::url($item['item']->image) }}" class="img-fluid rounded-4 shadow gallery-img" alt="{{ $item['item']->title }}">
+                                <img src="{{ Storage::url($item['item']->image) }}" class="img-fluid rounded-4 shadow gallery-img" 
+                                    alt="{{ $item['item']->title }}">
                             </div>
                             <div class="col-md-6 {{ $index % 2 == 0 ? 'ps-md-4' : 'pe-md-4' }} pt-4 pt-md-0">
                                 <h3 class="gallery-heading">{{ $item['item']->title }}</h3>
@@ -474,10 +475,16 @@
                                     @if($item['item']->type === 'file')
                                         <video controls>
                                             <source src="{{ Storage::url($item['item']->video_path) }}" type="video/mp4">
-                                            Your browser does not support the video tag.
+                                            Browser Anda tidak mendukung tag video.
                                         </video>
                                     @else
-                                        <iframe src="{{ $item['item']->video_url }}" title="{{ $item['item']->title }}" allowfullscreen></iframe>
+                                        <iframe 
+                                            src="{{ $item['item']->video_embed_url }}" 
+                                            title="{{ $item['item']->title }}" 
+                                            frameborder="0" 
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowfullscreen>
+                                        </iframe>
                                     @endif
                                 </div>
                             </div>

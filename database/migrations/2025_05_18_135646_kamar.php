@@ -15,11 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('nama_kamar');
             $table->text('deskripsi')->nullable();
-            $table->enum('gender', ['Laki-laki','Perempuan'])->nullable();
-            $table->string('type_kamar')->nullable();
-            $table->string('kategori')->nullable();
-            $table->string('gambar')->nullable();
-            $table->decimal('harga', 15, 2)->default(0);
             $table->timestamps();
         });
     }
