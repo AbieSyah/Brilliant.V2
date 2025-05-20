@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AdminAuthController extends Controller
 {
@@ -21,22 +22,22 @@ class AdminAuthController extends Controller
     protected function getStoreValidationRules()
     {
         return [
-            'email' => 'required|email|unique:admins',
-            'password' => 'required|min:8'
+            'email' => 'required|email|unique:admins,email',
+            'password' => 'required|min:6'
         ];
     }
 
     protected function getUpdateValidationRules()
     {
         return [
-            'email' => 'sometimes|required|email|unique:admins',
-            'password' => 'sometimes|required|min:8'
+            'email' => 'sometimes|required|email|unique:admins,email',
+            'password' => 'sometimes|required|min:6'
         ];
     }
 
     /**
-     * Register a new admin
-     * 
+     * Register a new admin.
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -44,8 +45,8 @@ class AdminAuthController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'email' => 'required|email|unique:admins',
-                'password' => 'required|min:8'
+                'email' => 'required|email|unique:admins,email',
+                'password' => 'required|min:6'
             ]);
 
             if ($validator->fails()) {
@@ -75,8 +76,8 @@ class AdminAuthController extends Controller
     }
 
     /**
-     * Login admin
-     * 
+     * Login admin.
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -118,8 +119,8 @@ class AdminAuthController extends Controller
     }
 
     /**
-     * Logout admin
-     * 
+     * Logout admin.
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
