@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('kamar_id')
                   ->constrained('kamar')
                   ->cascadeOnDelete();
+            $table->string('nama');
+            $table->enum('gender', ['Laki-laki', 'Perempuan']);
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('quantity')->default(1);

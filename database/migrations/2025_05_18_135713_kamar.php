@@ -10,12 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('detail_kamar', function (Blueprint $table) {
+        Schema::create('kamar', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kamar_id')
-                ->constrained('kamar')
+            $table->foreignId('camp_id')
+                ->constrained('camp')
                 ->cascadeOnDelete();
-            $table->text('alamat')->nullable();
+            $table->string('nama_kamar')->nullable();
             $table->string('type_kamar');
             $table->string('kategori');
             $table->enum('gender', ['Laki-laki', 'Perempuan']);
@@ -34,6 +34,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('detail_kamar');
+        Schema::dropIfExists('kamar');
     }
 };

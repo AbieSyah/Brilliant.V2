@@ -11,6 +11,8 @@ class BookingCalendar extends Model
     
     protected $fillable = [
         'kamar_id',
+        'nama',
+        'gender',
         'start_date',
         'end_date',
         'quantity'
@@ -18,7 +20,8 @@ class BookingCalendar extends Model
 
     protected $casts = [
         'start_date' => 'date',
-        'end_date' => 'date'
+        'end_date' => 'date',
+        'quantity' => 'integer'
     ];
 
     public function kamar(): BelongsTo
@@ -26,18 +29,8 @@ class BookingCalendar extends Model
         return $this->belongsTo(Kamar::class);
     }
 
-    // Helper method to check availability
-    public function isAvailable($startDate, $endDate): bool
+    public function getCampAttribute()
     {
-        return !static::where('kamar_id', $this->kamar_id)
-            ->where(function ($query) use ($startDate, $endDate) {
-                $query->whereBetween('start_date', [$startDate, $endDate])
-                    ->orWhereBetween('end_date', [$startDate, $endDate])
-                    ->orWhere(function ($q) use ($startDate, $endDate) {
-                        $q->where('start_date', '<=', $startDate)
-                          ->where('end_date', '>=', $endDate);
-                    });
-            })
-            ->exists();
+        return $this->kamar?->camp;
     }
 }
