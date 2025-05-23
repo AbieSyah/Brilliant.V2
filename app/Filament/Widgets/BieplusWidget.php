@@ -3,6 +3,9 @@
 namespace App\Filament\Widgets;
 
 use Filament\Widgets\Widget;
+use App\Models\Kamar;
+use App\Models\BookingCalendar;
+use Carbon\Carbon;
 
 class BieplusWidget extends Widget
 {
@@ -12,22 +15,37 @@ class BieplusWidget extends Widget
 
     public function getData(): array
     {
-        return [
-            [
-                'type' => 'vvip',
-                'color' => 'bg-green-500',
-                'count' => '0/98',
-            ],
-            [
-                'type' => 'vip',
-                'color' => 'bg-amber-500',
-                'count' => '15/98',
-            ],
-            [
-                'type' => 'Barrack',
-                'color' => 'bg-red-500',
-                'count' => '12orang',
-            ],
-        ];
+        $types = ['vip', 'vvip', 'barrack'];
+        $data = [];
+
+        foreach ($types as $type) {
+            $rooms = Kamar::where('kategori', 'bieplus')
+                         ->where('type_kamar', $type)
+                         ->get();
+                         
+            $totalRooms = $rooms->count();
+            
+            if ($totalRooms > 0) {
+                $occupiedRooms = BookingCalendar::whereIn('kamar_id', $rooms->pluck('id'))
+                    ->where(function($query) {
+                        $today = Carbon::now();
+                        $query->where('start_date', '<=', $today)
+                              ->where('end_date', '>=', $today);
+                    })->count();
+
+                $color = 'bg-green-500'; // Available
+                if ($occupiedRooms > 0) {
+                    $color = $occupiedRooms >= $totalRooms ? 'bg-red-500' : 'bg-amber-500';
+                }
+
+                $data[] = [
+                    'type' => strtoupper($type),
+                    'color' => $color,
+                    'count' => "{$occupiedRooms}/{$totalRooms}",
+                ];
+            }
+        }
+
+        return $data;
     }
 }
