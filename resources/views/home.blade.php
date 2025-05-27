@@ -17,7 +17,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="shortcut icon"href="{{ asset('landing-page/assets/img/b_camp_logo1.png') }}" type="image/x-icon">
+    <link rel="shortcut icon"href="{{ asset('landing-page/assets/img/b_camp.png') }}" type="image/x-icon">
     @livewireStyles
 </head>
 
@@ -36,7 +36,7 @@
                     <span class="highlight">Booking Camp <br>Pilihan Kamu Di</span><br> <span
                         class="camp-name">Brilliant Camp</span>
                 </h1>
-                <button class="hero-button" onclick="window.location.href='#booking'">Selengkapnya</button>
+                <button class="hero-button" onclick="window.location.href='#fasilitas'">Selengkapnya</button>
                 <p class="hero-subtext">By Brilliant English Course</p>
             </div>
         </div>
@@ -60,8 +60,8 @@
     <nav class="navbar navbar-expand-lg fixed-top bg-transparent">
         <div class="container-fluid">
             <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="{{ asset('/landing-page/assets/img/logos/logo.svg') }}" alt="Logo" width="250" height="50"
-                    class="me-2">
+                <img src="{{ asset('/landing-page/assets/img/logos/B_camp.png') }}" alt="Logo" width="200" height="40"
+                    class="me-2" style="object-fit: contain; max-width: 200px; height: auto;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar">
@@ -80,9 +80,6 @@
                             <a class="nav-link active" href="#Beranda">Beranda</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#status-kamar">Status Kamar</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="#galeri">Galeri</a>
                         </li>
                         <li class="nav-item">
@@ -97,260 +94,7 @@
         </div>
     </nav>
 
-    <style>
-        .room-grid {
-            margin-bottom: 2rem;
-        }
-
-        .room-card {
-            background: #fff;
-            border-radius: 8px;
-            padding: 0.75rem;
-            text-align: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            transition: transform 0.2s;
-            margin: 4px;
-            width: 60px;
-            height: 60px;
-            display: inline-flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .room-card:hover {
-            transform: translateY(-2px);
-        }
-
-        .room-card.available {
-            border: 1px solid #4CAF50;
-        }
-
-        .room-card.occupied {
-            border: 1px solid #f44336;
-            background-color: #ffebee;
-        }
-
-        .room-number {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 2px;
-            color: #333;
-        }
-
-        .room-status {
-            font-size: 0.65rem;
-            color: #666;
-        }
-
-        .room-section {
-            background: #ffffff;
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
-            border: 1px solid rgba(81, 146, 89, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .room-section:hover {
-            transform: translateY(-5px);
-        }
-
-        .room-type-title {
-            color: #519259;
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .room-type-title::before {
-            content: '';
-            display: block;
-            width: 30px;
-            height: 3px;
-            background: #519259;
-            border-radius: 2px;
-        }
-
-        .room-card {
-            background: #fff;
-            border-radius: 10px;
-            padding: 0.75rem;
-            text-align: center;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            margin: 4px;
-            width: 65px;
-            height: 65px;
-            display: inline-flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .room-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: #519259;
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .room-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .room-card.available {
-            border: 1.5px solid #4CAF50;
-            background: linear-gradient(145deg, #ffffff, #f8fff8);
-        }
-
-        .room-card.occupied {
-            border: 1.5px solid #f44336;
-            background: linear-gradient(145deg, #fff5f5, #ffebee);
-        }
-
-        .room-number {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 3px;
-            color: #2c3e50;
-        }
-
-        .room-status {
-            font-size: 0.65rem;
-            font-weight: 500;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .rooms-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-            padding: 1rem;
-            background: #f8f9fa;
-            border-radius: 12px;
-        }
-
-        .legend-container {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 2rem;
-            padding: 1rem;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            background: #f8f9fa;
-            transition: transform 0.2s ease;
-        }
-
-        .legend-item:hover {
-            transform: translateY(-2px);
-        }
-
-        .legend-color {
-            width: 15px;
-            height: 15px;
-            border-radius: 4px;
-        }
-
-        .legend-color.available {
-            background: #4CAF50;
-            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
-        }
-
-        .legend-color.occupied {
-            background: #f44336;
-            box-shadow: 0 0 10px rgba(244, 67, 54, 0.3);
-        }
-
-        .legend-text {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: #2c3e50;
-        }
-    </style>
-
-    <section id="status-kamar" class="py-5" style="background-color: #f8f9fa;">
-        <div class="container" style="max-width: 900px;">
-            <h2 class="text-center fw-bold mb-4" style="color: #519259; font-size: 2rem;">Status <span
-                    style="color:#000;">Kamar</span></h2>
-
-            <!-- Brilliant Rooms -->
-            <div class="room-section">
-                <div class="room-type-title">Brilliant - 30 Kamar</div>
-                <div class="rooms-container">
-                    @php
-                        $brilliantRooms = 30;
-                        $brilliantOccupied = [1, 5, 10, 15];
-                    @endphp
-
-                    @for ($i = 1; $i <= $brilliantRooms; $i++)
-                        <div class="room-card {{ in_array($i, $brilliantOccupied) ? 'occupied' : 'available' }}">
-                            <div class="room-number">{{ $i }}</div>
-                            <div class="room-status">
-                                {{ in_array($i, $brilliantOccupied) ? 'Terisi' : 'Kosong' }}
-                            </div>
-                        </div>
-                    @endfor
-                </div>
-            </div>
-
-            <!-- BiePlus Rooms -->
-            <div class="room-section">
-                <div class="room-type-title">BiePlus - 50 Kamar</div>
-                <div class="rooms-container">
-                    @php
-                        $biePlusRooms = 50;
-                        $biePlusOccupied = [2, 7, 12, 20, 25];
-                    @endphp
-
-                    @for ($i = 1; $i <= $biePlusRooms; $i++)
-                        <div class="room-card {{ in_array($i, $biePlusOccupied) ? 'occupied' : 'available' }}">
-                            <div class="room-number">{{ $i }}</div>
-                            <div class="room-status">
-                                {{ in_array($i, $biePlusOccupied) ? 'Terisi' : 'Kosong' }}
-                            </div>
-                        </div>
-                    @endfor
-                </div>
-            </div>
-
-            <!-- Legend -->
-            <div class="text-center mt-3">
-                <div class="legend-item">
-                    <span class="legend-color available"></span>
-                    <span class="legend-text">Kosong</span>
-                </div>
-                <div class="legend-item">
-                    <span class="legend-color occupied"></span>
-                    <span class="legend-text">Terisi</span>
-                </div>
-            </div>
-        </div>
-    </section>
+  
 
     <style>
         .gallery-heading {
@@ -636,9 +380,9 @@
         <div class="add-feedback text-center my-5" id="chat" style="margin-bottom: auto">
             <img src="{{ asset('/landing-page/assets/img/logos/pesan.png') }}" alt="Tambah Pesan Icon"
                 class="feedback-icon">
-            <span class="feedback-text">Butuh bantuan? Chat disini...</span>
+            <span class="feedback-text">Berikan Ulasan Anda disini...</span>
             <button type="button" class="feedback-btn" data-bs-toggle="modal" data-bs-target="#reviewModal">
-                Chat
+                Ulasan
             </button>
         </div>
     </section>
@@ -970,3 +714,174 @@
         }
     });
 </script>
+<!-- Add footer section here, before closing body tag -->
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .footer {
+        background: linear-gradient(135deg, #4E6C50 0%, #395144 100%);
+        color: #fff;
+        padding: 60px 20px 40px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+    }
+
+    .footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #9DC08B, #609966, #9DC08B);
+    }
+
+    .footer-container {
+        max-width: 1200px;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        position: relative;
+        z-index: 1;
+    }
+
+    .footer-logo {
+        flex: 1 1 300px;
+        margin-bottom: 30px;
+        padding-right: 40px;
+    }
+
+    .footer-logo img {
+        max-width: 150px; /* reduced from 200px */
+        margin-bottom: 20px;
+        filter: brightness(1.2);
+        transition: transform 0.3s ease;
+    }
+
+    .footer-logo img:hover {
+        transform: scale(1.05);
+    }
+
+    .footer-desc {
+        font-size: 15px;
+        line-height: 1.6;
+        color: #E5F0EA;
+        text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+    }
+
+    .footer-contact {
+        flex: 1 1 300px;
+        margin-bottom: 20px;
+        background: rgba(255,255,255,0.05);
+        padding: 25px;
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 12px 15px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        background: rgba(255,255,255,0.03);
+    }
+
+    .contact-item:hover {
+        background: rgba(255,255,255,0.1);
+        transform: translateX(5px);
+    }
+
+    .contact-item span {
+        margin-left: 15px;
+        font-size: 14px;
+        color: #E5F0EA;
+    }
+
+    .contact-icon {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        fill: currentColor;
+    }
+
+    .footer-bottom {
+        text-align: center;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding-top: 20px;
+        margin-top: 30px;
+        font-size: 14px;
+        color: #9DC08B;
+    }
+
+    .footer-bottom strong {
+        color: #fff;
+        font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+        .footer {
+            padding: 40px 20px 30px;
+        }
+        
+        .footer-logo, .footer-contact {
+            flex: 1 1 100%;
+            padding-right: 0;
+        }
+
+        .contact-item {
+            padding: 8px;
+        }
+    }
+</style>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-logo">
+            <img src="{{ asset('/landing-page/assets/img/b_camp.png') }}" alt="Brilliant English Course">
+            <div class="footer-desc">
+                Lembaga Kursus Bahasa Inggris Terbesar, Ternyaman dan Paling Fun di Kampung Inggris Pare – Kediri
+            </div>
+        </div>
+        <div class="footer-contact">
+            <div class="contact-item">
+                <svg class="contact-icon" viewBox="0 0 24 24">
+                    <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02c-.37-1.11-.56-2.3-.56-3.53c0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99C3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
+                </svg>
+                <span>0821-4148-6171</span>
+            </div>
+            <div class="contact-item">
+                <svg class="contact-icon" viewBox="0 0 24 24">
+                    <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+                </svg>
+                <span>0821-4148-6171</span>
+            </div>
+            <div class="contact-item">
+                <svg class="contact-icon" viewBox="0 0 24 24">
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+                <span>info@kursusbrilliant.com</span>
+            </div>
+            <div class="contact-item">
+                <svg class="contact-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                </svg>
+                <span>Jl. Flamboyan No.127B, Tulungrejo, Kec. Pare Kediri, Jawa Timur – INDONESIA</span>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        © 2025 <strong>Brilliant English Course</strong>. All rights reserved
+    </div>
+</footer>
+</body>
