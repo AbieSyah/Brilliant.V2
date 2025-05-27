@@ -34,5 +34,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Booking routes
     Route::get('/booking-calendar/kamar/{id}', [BookingCalendarController::class, 'getKamarDetail']);
+    Route::get('/booking-calendar/check/{id}', [BookingCalendarController::class, 'checkBookings']); // Add this new route
     Route::apiResource('/booking-calendar', BookingCalendarController::class);
 });

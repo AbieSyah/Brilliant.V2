@@ -43,24 +43,27 @@ class BookingCalendarController extends Controller
     public function getKamarDetail($id)
     {
         try {
-            $kamar = Kamar::with('camp')->findOrFail($id);
+            // Get the kamar details
+            $kamar = Kamar::findOrFail($id);
             
+            // Get all bookings for this kamar
+            $bookings = BookingCalendar::where('kamar_id', $id)
+                ->select('id', 'nama', 'gender', 'start_date', 'end_date')
+                ->orderBy('start_date')
+                ->get();
+
             return response()->json([
                 'status' => true,
                 'message' => 'Data kamar retrieved successfully',
                 'data' => [
-                    'kamar_id' => $kamar->id,
-                    'nama_kamar' => $kamar->nama_kamar,
-                    'type_kamar' => $kamar->type_kamar,
-                    'kategori' => $kamar->kategori,
-                    'alamat' => $kamar->camp->alamat,
-                    'harga' => $kamar->harga
+                    'kamar' => $kamar,
+                    'bookings' => $bookings
                 ]
-            ], Response::HTTP_OK);
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Failed to retrieve kamar detail',
+                'message' => 'Failed to retrieve kamar data',
                 'error' => $e->getMessage()
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -69,7 +72,7 @@ class BookingCalendarController extends Controller
     public function store(Request $request)
     {
         try {
-            $validatedData = $this->validate($request, $this->getStoreValidationRules());
+            $validatedData = $request->validate($this->getStoreValidationRules());
             
             // Get kamar detail first
             $kamar = Kamar::with('camp')->findOrFail($validatedData['kamar_id']);
@@ -93,6 +96,28 @@ class BookingCalendarController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Gagal menambahkan booking',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function checkBookings($id)
+    {
+        try {
+            $bookings = BookingCalendar::where('kamar_id', $id)
+                ->select('id', 'nama', 'gender', 'start_date', 'end_date', 'quantity')
+                ->orderBy('start_date')
+                ->get();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Booking data retrieved successfully',
+                'data' => $bookings
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to retrieve booking data',
                 'error' => $e->getMessage()
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
