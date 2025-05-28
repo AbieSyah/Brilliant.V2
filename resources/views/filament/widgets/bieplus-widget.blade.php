@@ -6,7 +6,7 @@
             
             <div class="flex gap-6">
                 @foreach($this->getData() as $item)
-                    <div class="w-[120px] h-[120px] rounded-lg {{ $item['color'] }} p-6 flex flex-col justify-between">
+                    <div class="w-[120px] h-[120px] rounded-lg {{ $item['color'] }} p-6 flex flex-col justify-center items-center">
                         <span class="text-white text-2xl font-medium text-center">{{ $item['type'] }}</span>
                         <span class="text-white text-lg text-center">{{ $item['count'] }}</span>
                     </div>
