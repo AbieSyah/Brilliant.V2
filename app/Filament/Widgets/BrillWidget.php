@@ -27,21 +27,46 @@ class BrillWidget extends Widget
                 ->where('kategori', 'brilliant')
                 ->get();
 
-            $hasActiveBooking = BookingCalendar::whereIn('kamar_id', $brilliantRooms->pluck('id'))
-                ->where(function($query) {
-                    $today = Carbon::now();
-                    $query->where('start_date', '<=', $today)
-                          ->where('end_date', '>=', $today);
-                })->exists();
+            $totalStatus = $this->calculateCampStatus($brilliantRooms);
 
             $campStatuses[] = [
                 'id' => $camp->id,
                 'label' => $camp->nama_camp,
-                'status' => $hasActiveBooking ? 'occupied' : 'available',
-                'color' => $hasActiveBooking ? 'bg-red-500' : 'bg-green-500'
+                'status' => $totalStatus['status'],
+                'color' => $totalStatus['color'],
+                'bookingInfo' => $totalStatus['bookingInfo']
             ];
         }
 
         return $campStatuses;
+    }
+
+    private function calculateCampStatus($rooms)
+    {
+        $today = Carbon::now();
+        $totalBeds = 0;
+        $occupiedBeds = 0;
+
+        foreach ($rooms as $room) {
+            $totalBeds += $room->jumlah_kasur;
+            
+            $roomBookings = BookingCalendar::where('kamar_id', $room->id)
+                ->where('start_date', '<=', $today)
+                ->where('end_date', '>=', $today)
+                ->count();
+                
+            $occupiedBeds += $roomBookings;
+        }
+
+        $color = 'bg-green-500'; // Available (hijau)
+        if ($occupiedBeds > 0) {
+            $color = $occupiedBeds >= $totalBeds ? 'bg-red-500' : 'bg-amber-500'; // Kuning jika ada booking tapi belum penuh
+        }
+
+        return [
+            'status' => $occupiedBeds == 0 ? 'available' : ($occupiedBeds >= $totalBeds ? 'full' : 'partially_occupied'),
+            'color' => $color,
+            'bookingInfo' => "$occupiedBeds/$totalBeds"
+        ];
     }
 }
