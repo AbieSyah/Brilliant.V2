@@ -1,11 +1,11 @@
 # Brilliant.V2 - Camp Room Management System
 
-A management system for monitoring room availability and usage in Brilliant and Bieplus camps with company profile promotion.
+A management system for monitoring room availability and usage in Brilliant camps with company profile promotion.
 
 ## Features
 - Company Profile Promotion for Brilliant and Bieplus
 - Room availability dashboard monitoring
-- Room management for Brilliant and Bieplus
+- Room management for Brilliant
 - Status monitoring (available, occupied, full)
 
 
@@ -45,7 +45,7 @@ cd Brilliant.V2
 composer install
 ```
 
-3. Install NPM packages
+3. Install NPM packages in terminal/windows powershell or command prompt
 ```bash
 npm install
 ```
@@ -63,17 +63,22 @@ php artisan key:generate
 php artisan migrate
 ```
 
-7. Build assets
+7. Build assets for development
 ```bash
 npm run dev
 ```
 
-8. Start local development server
+8. Build assets for production
+```bash
+npm run build
+```
+
+9. Start local development server
 ```bash
 php artisan serve
 ```
 
-9. Access the application
+10. Access the application
 - Main URL
 - Admin Dashboard: /admin
 
