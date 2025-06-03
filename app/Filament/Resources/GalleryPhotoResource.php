@@ -21,7 +21,7 @@ class GalleryPhotoResource extends Resource
     protected static ?string $navigationGroup = 'Manajemen Konten';
     protected static ?string $pluralModelLabel = 'Galeri Foto';
     protected static ?string $navigationParent = 'Daftar Galeri';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
@@ -64,6 +64,7 @@ class GalleryPhotoResource extends Resource
                     ->label('Tanggal Upload'),
             ])
             ->actions([
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

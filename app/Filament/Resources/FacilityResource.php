@@ -17,6 +17,8 @@ class FacilityResource extends Resource
     protected static ?string $navigationGroup = 'Manajemen Konten';
     protected static ?string $modelLabel = 'Fasilitas';
     protected static ?string $pluralModelLabel = 'Daftar Fasilitas';
+    protected static ?int $navigationSort = 5;
+
 
     public static function form(Form $form): Form
     {

@@ -22,7 +22,7 @@ class ReviewResource extends Resource
     protected static ?string $navigationGroup = 'Manajemen Konten';
     protected static ?string $modelLabel = 'Ulasan';
     protected static ?string $pluralModelLabel = 'Daftar Ulasan';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {
