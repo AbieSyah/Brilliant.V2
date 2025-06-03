@@ -20,7 +20,7 @@ class GalleryVideoResource extends Resource
     protected static ?string $pluralModelLabel = 'Galeri Video';
     protected static ?string $navigationParent = 'Daftar Galeri';
     protected static ?string $navigationLabel = 'Galeri Video';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
@@ -84,6 +84,7 @@ class GalleryVideoResource extends Resource
                     ->label('Tanggal Upload'),
             ])
             ->actions([
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

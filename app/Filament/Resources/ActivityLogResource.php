@@ -15,7 +15,9 @@ class ActivityLogResource extends Resource
     protected static ?string $model = ActivityLog::class;
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
     protected static ?string $navigationGroup = 'Sistem';
-     protected static ?string $pluralModelLabel = 'Log Aktivitas';
+    protected static ?string $pluralModelLabel = 'Log Aktivitas';
+    protected static ?int $navigationSort = 7;
+
     protected static bool $shouldRegisterNavigation = true;
 
     public static function form(Form $form): Form
@@ -36,15 +38,15 @@ class ActivityLogResource extends Resource
                 Tables\Columns\TextColumn::make('action')
                     ->label('Aksi')
                     ->badge()
-                    ->formatStateUsing(fn ($record) => $record->action_label)
-                    ->color(fn (string $state): string => match ($state) {
+                    ->formatStateUsing(fn($record) => $record->action_label)
+                    ->color(fn(string $state): string => match ($state) {
                         'created' => 'success',
                         'updated' => 'warning',
                         'deleted' => 'danger',
                     }),
                 Tables\Columns\TextColumn::make('model_type')
                     ->label('Data yang diubah')
-                    ->formatStateUsing(fn ($record) => $record->model_name),
+                    ->formatStateUsing(fn($record) => $record->model_name),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dilakukan pada')
                     ->formatStateUsing(function ($state) {
