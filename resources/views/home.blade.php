@@ -94,8 +94,6 @@
         </div>
     </nav>
 
-  
-
     <style>
         .gallery-heading {
             font-family: 'Segoe UI', sans-serif;
@@ -269,18 +267,21 @@
                 @if($brilliantFacilities->count() > 0)
                     <div class="cards">
                         @foreach($brilliantFacilities as $facility)
-                                        <div class="card">
-                                            <img src="{{ asset('/landing-page/assets/img/logos/C' . ($loop->iteration % 3 == 0 ? 3 : $loop->iteration % 3) . '.png') }}"
-                                                alt="Logo {{ $facility->tipe_kamar }}" class="card-logo">
-                                            <h3>{{ $facility->nama_kamar }}</h3>
-                                            <div class="image-container">
-                                                <img src="{{ Storage::url($facility->image) }}" alt="{{ $facility->nama_kamar }}">
-                                                <button class="detail-button" data-facility="{{ json_encode([
-                                'title' => $facility->nama_kamar,
-                                'description' => $facility->deskripsi
-                            ]) }}" onclick="openPopup(this)">Detail</button>
-                                            </div>
-                                        </div>
+                            <div class="card">
+                                <img src="{{ asset('/landing-page/assets/img/logos/C' . ($loop->iteration % 3 == 0 ? 3 : $loop->iteration % 3) . '.png') }}"
+                                    alt="Logo {{ $facility->tipe_kamar }}" class="card-logo">
+                                <h3>{{ $facility->nama_kamar }}</h3>
+                                <div class="image-container">
+                                    <img src="{{ Storage::url($facility->image) }}" alt="{{ $facility->nama_kamar }}">
+                                    <button class="detail-button" 
+                                        data-facility="{{ json_encode([
+                                            'title' => $facility->nama_kamar,
+                                            'description' => $facility->deskripsi,
+                                            'image' => Storage::url($facility->image)
+                                        ]) }}" 
+                                        onclick="openPopup(this)">Detail</button>
+                                </div>
+                            </div>
                         @endforeach
                     </div>
                 @else
@@ -299,18 +300,21 @@
                 @if($bieplusFacilities->count() > 0)
                     <div class="cards">
                         @foreach($bieplusFacilities as $facility)
-                                        <div class="card">
-                                            <img src="{{ asset('/landing-page/assets/img/logos/C' . ($loop->iteration % 3 == 0 ? 3 : $loop->iteration % 3) . '.png') }}"
-                                                alt="Logo {{ $facility->tipe_kamar }}" class="card-logo">
-                                            <h3>{{ $facility->nama_kamar }}</h3>
-                                            <div class="image-container">
-                                                <img src="{{ Storage::url($facility->image) }}" alt="{{ $facility->nama_kamar }}">
-                                                <button class="detail-button" data-facility="{{ json_encode([
-                                'title' => $facility->nama_kamar,
-                                'description' => $facility->deskripsi
-                            ]) }}" onclick="openPopup(this)">Detail</button>
-                                            </div>
-                                        </div>
+                            <div class="card">
+                                <img src="{{ asset('/landing-page/assets/img/logos/C' . ($loop->iteration % 3 == 0 ? 3 : $loop->iteration % 3) . '.png') }}"
+                                    alt="Logo {{ $facility->tipe_kamar }}" class="card-logo">
+                                <h3>{{ $facility->nama_kamar }}</h3>
+                                <div class="image-container">
+                                    <img src="{{ Storage::url($facility->image) }}" alt="{{ $facility->nama_kamar }}">
+                                    <button class="detail-button" 
+                                        data-facility="{{ json_encode([
+                                            'title' => $facility->nama_kamar,
+                                            'description' => $facility->deskripsi,
+                                            'image' => Storage::url($facility->image)
+                                        ]) }}" 
+                                        onclick="openPopup(this)">Detail</button>
+                                </div>
+                            </div>
                         @endforeach
                     </div>
                 @else
@@ -323,15 +327,38 @@
                 @endif
             </div>
 
-            <!-- Facility Detail Popup -->
+            <!-- Facility Detail Popup - DIPERBARUI DENGAN ZOOM -->
             <div id="popup" class="popup">
                 <div class="popup-content">
                     <span class="close-btn" onclick="closePopup()">&times;</span>
-                    <p id="popup-description" style="white-space: pre-line; margin-top: 20px;"></p>
+                    <div id="popup-image-container" style="text-align: center; margin-bottom: 20px; position: relative;">
+                        <img id="popup-image" src="" alt="" 
+                            style="max-width: 100%; max-height: 300px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); cursor: zoom-in; transition: transform 0.3s ease;"
+                            onclick="zoomImage(this)">
+                        <div class="zoom-hint" style="position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 2px 6px; border-radius: 3px; font-size: 10px;">
+                            Klik untuk zoom
+                        </div>
+                    </div>
+                    <h3 id="popup-title" style="margin-bottom: 15px; color: #4E6C50; font-weight: 600;"></h3>
+                    <p id="popup-description" style="white-space: pre-line; line-height: 1.6; color: #333;"></p>
+                </div>
+            </div>
+
+            <!-- Image Zoom Modal -->
+            <div id="zoom-modal" class="zoom-modal">
+                <div class="zoom-modal-content">
+                    <span class="zoom-close" onclick="closeZoom()">&times;</span>
+                    <img id="zoom-image" src="" alt="">
+                    <div class="zoom-controls">
+                        <button onclick="zoomIn()">+</button>
+                        <button onclick="zoomOut()">-</button>
+                        <button onclick="resetZoom()">Reset</button>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+
     <section class="ulasan-section">
         <div class="container text-center">
             <h2 style="font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 2rem; margin-top: -350px;">
@@ -422,6 +449,7 @@
             height: 30px;
         }
 
+        /* POPUP STYLES - DIPERBARUI */
         .popup {
             display: none;
             position: fixed;
@@ -437,19 +465,131 @@
 
         .popup-content {
             background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            max-width: 500px;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
             width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
             position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .close-btn {
             position: absolute;
-            right: 10px;
-            top: 5px;
-            font-size: 24px;
+            right: 15px;
+            top: 10px;
+            font-size: 28px;
             cursor: pointer;
+            color: #666;
+            transition: color 0.3s ease;
+            z-index: 1001;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        /* ZOOM MODAL STYLES */
+        .zoom-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .zoom-modal-content {
+            position: relative;
+            max-width: 95%;
+            max-height: 95%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .zoom-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            font-size: 36px;
+            color: white;
+            cursor: pointer;
+            z-index: 2001;
+            background: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .zoom-close:hover {
+            background: rgba(0,0,0,0.8);
+        }
+
+        #zoom-image {
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            cursor: grab;
+        }
+
+        #zoom-image:active {
+            cursor: grabbing;
+        }
+
+        .zoom-controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .zoom-controls button {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+
+        .zoom-controls button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .zoom-hint {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #popup-image-container:hover .zoom-hint {
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .zoom-close {
+                top: -30px;
+                font-size: 28px;
+                width: 30px;
+                height: 30px;
+            }
+            
+            .zoom-controls button {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
         }
     </style>
 
@@ -492,9 +632,25 @@
     });
 </script>
 <script>
+    // POPUP DAN ZOOM FUNCTIONS - DIPERBARUI
+    let currentZoom = 1;
+    let isDragging = false;
+    let startX, startY, translateX = 0, translateY = 0;
+
     function openPopup(button) {
         const facility = JSON.parse(button.dataset.facility);
+        
+        // Set gambar
+        document.getElementById('popup-image').src = facility.image;
+        document.getElementById('popup-image').alt = facility.title;
+        
+        // Set judul
+        document.getElementById('popup-title').textContent = facility.title;
+        
+        // Set deskripsi
         document.getElementById('popup-description').textContent = facility.description;
+        
+        // Tampilkan popup
         document.getElementById('popup').style.display = 'flex';
     }
 
@@ -502,13 +658,132 @@
         document.getElementById('popup').style.display = 'none';
     }
 
+    function zoomImage(img) {
+        const zoomModal = document.getElementById('zoom-modal');
+        const zoomImage = document.getElementById('zoom-image');
+        
+        zoomImage.src = img.src;
+        zoomImage.alt = img.alt;
+        zoomModal.style.display = 'flex';
+        
+        // Reset zoom dan posisi
+        currentZoom = 1;
+        translateX = 0;
+        translateY = 0;
+        updateImageTransform();
+    }
+
+    function closeZoom() {
+        document.getElementById('zoom-modal').style.display = 'none';
+    }
+
+    function zoomIn() {
+        currentZoom = Math.min(currentZoom * 1.2, 5);
+        updateImageTransform();
+    }
+
+    function zoomOut() {
+        currentZoom = Math.max(currentZoom / 1.2, 0.5);
+        updateImageTransform();
+    }
+
+    function resetZoom() {
+        currentZoom = 1;
+        translateX = 0;
+        translateY = 0;
+        updateImageTransform();
+    }
+
+    function updateImageTransform() {
+        const zoomImage = document.getElementById('zoom-image');
+        zoomImage.style.transform = `scale(${currentZoom}) translate(${translateX}px, ${translateY}px)`;
+    }
+
+    // Drag functionality untuk zoom image
+    document.getElementById('zoom-image').addEventListener('mousedown', (e) => {
+        if (currentZoom > 1) {
+            isDragging = true;
+            startX = e.clientX - translateX;
+            startY = e.clientY - translateY;
+            e.preventDefault();
+        }
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging && currentZoom > 1) {
+            translateX = e.clientX - startX;
+            translateY = e.clientY - startY;
+            updateImageTransform();
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
+    // Touch events untuk mobile
+    let touchStartX, touchStartY;
+
+    document.getElementById('zoom-image').addEventListener('touchstart', (e) => {
+        if (currentZoom > 1) {
+            touchStartX = e.touches[0].clientX - translateX;
+            touchStartY = e.touches[0].clientY - translateY;
+        }
+    });
+
+    document.getElementById('zoom-image').addEventListener('touchmove', (e) => {
+        if (currentZoom > 1) {
+            e.preventDefault();
+            translateX = e.touches[0].clientX - touchStartX;
+            translateY = e.touches[0].clientY - touchStartY;
+            updateImageTransform();
+        }
+    });
+
+    // Mouse wheel zoom
+    document.getElementById('zoom-image').addEventListener('wheel', (e) => {
+        e.preventDefault();
+        if (e.deltaY < 0) {
+            zoomIn();
+        } else {
+            zoomOut();
+        }
+    });
+
     // Close popup when clicking outside
     window.onclick = function (event) {
         const popup = document.getElementById('popup');
+        const zoomModal = document.getElementById('zoom-modal');
+        
         if (event.target == popup) {
             closePopup();
         }
+        if (event.target == zoomModal) {
+            closeZoom();
+        }
     }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+        const zoomModal = document.getElementById('zoom-modal');
+        if (zoomModal.style.display === 'flex') {
+            switch(e.key) {
+                case 'Escape':
+                    closeZoom();
+                    break;
+                case '+':
+                case '=':
+                    zoomIn();
+                    break;
+                case '-':
+                    zoomOut();
+                    break;
+                case '0':
+                    resetZoom();
+                    break;
+            }
+        }
+    });
 </script>
 <script>
     const carousel = document.getElementById('commentCarousel');
@@ -601,7 +876,7 @@
 <script>
     const campDetails = {
         @foreach($brilliantFacilities->concat($bieplusFacilities) as $facility)
-                                '{{ $facility->id }}': {
+            '{{ $facility->id }}': {
                 title: '{{ $facility->nama_kamar }}',
                 description: 'Tipe: {{ $facility->tipe_kamar }}\n' +
                     'Gender: {{ $facility->gender }}\n' +
@@ -620,90 +895,6 @@
     });
 </script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const carousel = document.getElementById('commentCarousel');
-        const carouselItems = carousel.querySelector('.carousel-items');
-        const cards = document.querySelectorAll('.comment-card');
-
-        // Clone cards for infinite effect
-        cards.forEach(card => {
-            const clone = card.cloneNode(true);
-            carouselItems.appendChild(clone);
-        });
-
-        let isScrolling = false;
-        let startX;
-        let scrollLeft;
-
-        // Track scrolling position
-        carouselItems.addEventListener('scroll', () => {
-            if (!isScrolling) {
-                window.requestAnimationFrame(() => {
-                    const totalWidth = carouselItems.scrollWidth / 2;
-                    const currentScroll = carouselItems.scrollLeft;
-
-                    if (currentScroll >= totalWidth) {
-                        carouselItems.scrollLeft = 0;
-                    } else if (currentScroll <= 0) {
-                        carouselItems.scrollLeft = totalWidth;
-                    }
-                    isScrolling = false;
-                });
-            }
-            isScrolling = true;
-        });
-
-        // Update arrow buttons
-        function updateArrows() {
-            const scrollPosition = carouselItems.scrollLeft;
-            leftArrow.style.display = 'flex';
-            rightArrow.style.display = 'flex';
-        }
-
-        // Scroll functions
-        function scrollCarousel(distance) { }
-        const currentScroll = carouselItems.scrollLeft;
-        const targetScroll = currentScroll + distance;
-
-        carouselItems.scrollTo({
-            left: targetScroll,
-            behavior: 'smooth'
-        });
-    }
-
-        // Arrow click handlers
-        document.getElementById('leftArrow').addEventListener('click', () => { }
-            scrollCarousel(-300);
-        });
-
-    document.getElementById('rightArrow').addEventListener('click', () => { }
-            scrollCarousel(300);
-        });
-
-    // Touch events for mobile
-    carouselItems.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].pageX - carouselItems.offsetLeft;
-        scrollLeft = carouselItems.scrollLeft;
-    });
-
-    carouselItems.addEventListener('touchmove', (e) => { }
-            if (!startX) return;
-    const x = e.touches[0].pageX - carouselItems.offsetLeft;
-    const walk = (x - startX) * 2;
-    carouselItems.scrollLeft = scrollLeft - walk;
-        });
-
-    carouselItems.addEventListener('touchend', () => {
-        startX = null;
-    });
-
-    // Initialize
-    updateArrows();
-    window.addEventListener('resize', updateArrows);
-    });
-</script>
-
-<script>
     // Auto close alert after 3 seconds
     document.addEventListener('DOMContentLoaded', function () {
         let alert = document.querySelector('.alert');
@@ -714,7 +905,8 @@
         }
     });
 </script>
-<!-- Add footer section here, before closing body tag -->
+
+<!-- Footer -->
 <style>
     body {
         margin: 0;
@@ -758,7 +950,7 @@
     }
 
     .footer-logo img {
-        max-width: 150px; /* reduced from 200px */
+        max-width: 150px;
         margin-bottom: 20px;
         filter: brightness(1.2);
         transition: transform 0.3s ease;
@@ -885,3 +1077,5 @@
     </div>
 </footer>
 </body>
+
+</html>
